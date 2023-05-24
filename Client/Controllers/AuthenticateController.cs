@@ -1,5 +1,6 @@
 ﻿using Client.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Client.Controllers
 {
@@ -15,11 +16,22 @@ namespace Client.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult LoginPage(Login login)
+        public async Task<IActionResult> LoginPage(Login login)
         {
             if(ModelState.IsValid)
             {
-                return RedirectToAction("Index", "Admin");
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("https://localhost:7257/Authenticate/Login");
+                    var response = await client.PostAsJsonAsync("", login);
+                    if(response.IsSuccessStatusCode)
+                    {
+                        var responseContent = await response.Content.ReadAsStringAsync();
+                        AdminIndex? Data = JsonConvert.DeserializeObject<AdminIndex>(responseContent);
+                        return RedirectToAction("Index", "Admin", Data);
+                        //return View(responseContent);
+                    }
+                }
             }
             return View(login);
         }

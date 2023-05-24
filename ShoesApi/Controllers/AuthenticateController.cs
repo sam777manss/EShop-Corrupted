@@ -29,7 +29,25 @@ namespace ShoesApi.Controllers
             if(ModelState.IsValid)
             {
                 bool successful = await _user.RegisterUser(register);
-                return Ok();
+                if (successful)
+                {
+                    return Ok();
+                }
+            }
+            return Unauthorized();
+        }
+
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> Login(Login login)
+        {
+            if (ModelState.IsValid)
+            {
+                AdminIndex successful = await _user.LoginUser(login);
+                if (successful.Email != null)
+                {
+                    return Ok(successful);
+                }
             }
             return Unauthorized();
         }
