@@ -10,6 +10,12 @@ namespace ShoesApi.Repositories
     {
         private UserManager<AppUser> userManager;
         private static readonly ILog log = LogManager.GetLogger(typeof(UserRepositories));
+        // Need To be included in constructor all the interfaces and other dbcontext manager
+
+        public UserRepositories(UserManager<AppUser> userManager)
+        {
+            this.userManager = userManager;
+        }
 
         public async Task<bool> RegisterUser(Register register)
         {

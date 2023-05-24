@@ -20,7 +20,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAuthorization().AddScoped<IUser, UserRepositories>();
+builder.Services.AddScoped<IUser, UserRepositories>();
+builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
 {

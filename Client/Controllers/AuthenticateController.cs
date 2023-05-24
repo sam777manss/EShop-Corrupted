@@ -15,9 +15,13 @@ namespace Client.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult LoginPage(Login  login)
+        public IActionResult LoginPage(Login login)
         {
-            return View();
+            if(ModelState.IsValid)
+            {
+                return RedirectToAction("Index", "Admin");
+            }
+            return View(login);
         }
         [HttpGet]
         public IActionResult RegisterPage()
@@ -40,7 +44,7 @@ namespace Client.Controllers
                     }
                 }
             }
-            return View();
+            return View(register);
         }
     }
 }
