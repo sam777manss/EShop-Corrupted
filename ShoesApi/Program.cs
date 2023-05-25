@@ -40,6 +40,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
     options.SlidingExpiration = true;
 });
+
+
 // --- set session time out Ends --- //
 var app = builder.Build();
 
@@ -51,9 +53,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseCors("MyAllowPolicy");
 
-app.UseAuthorization();
 
 app.MapControllers();
 
