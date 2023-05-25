@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Client.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers
 {
     public class UserController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(UserIndex userIndex)
         {
-            return View();
+            return View(userIndex);
         }
     }
 }

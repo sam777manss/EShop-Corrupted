@@ -1,7 +1,7 @@
 // Select the target element
 var targetEmail = document.querySelector('span[data-val-placeholder="m.Email"]');
 var targetPassword = document.querySelector('span[data-val-placeholder="m.Password"]');
-
+debugger;
 // Create a new instance of MutationObserver
 var observer = new MutationObserver(function () {
 

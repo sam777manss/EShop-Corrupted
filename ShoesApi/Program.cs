@@ -32,6 +32,15 @@ builder.Services.AddCors(options =>
                    .AllowAnyHeader();
         });
 });
+
+// --- set session time out starts --- //
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.Name = ".AspNetCore.Identity.Application";
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+    options.SlidingExpiration = true;
+});
+// --- set session time out Ends --- //
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

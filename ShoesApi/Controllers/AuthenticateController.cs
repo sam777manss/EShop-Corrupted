@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using ShoesApi.Interfaces;
 using ShoesApi.Models;
+using System.Security.Claims;
 
 namespace ShoesApi.Controllers
 {
@@ -8,11 +10,20 @@ namespace ShoesApi.Controllers
     [ApiController]
     public class AuthenticateController : ControllerBase
     {
+        private UserManager<AppUser> userManager;
+        private SignInManager<AppUser> signInManager;
+        private readonly RoleManager<IdentityRole> roleManager;
+
+        // Need To be included in constructor all the interfaces and other dbcontext manager
+
         private readonly IUser _user;
         // Need To be included in constructor all the interfaces
 
-        public AuthenticateController(IUser user)
+        public AuthenticateController(IUser user, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+            this.roleManager = roleManager;
             _user = user;
         }
 
@@ -33,6 +44,23 @@ namespace ShoesApi.Controllers
                 {
                     return Ok();
                 }
+                return BadRequest();
+            }
+            return Unauthorized();
+        }
+        [HttpPost]
+        [Route("RegisterAdmin")]
+        public async Task<IActionResult> RegisterAdmin(Register registerAdmin)
+        {
+            if (ModelState.IsValid)
+            {
+                Response success = await _user.RegisterAdmin(registerAdmin);
+
+                if(success.Message!= null)
+                {
+                    return Ok(success);
+                }
+                return BadRequest();
             }
             return Unauthorized();
         }
@@ -43,13 +71,23 @@ namespace ShoesApi.Controllers
         {
             if (ModelState.IsValid)
             {
-                AdminIndex successful = await _user.LoginUser(login);
-                if (successful.Email != null)
-                {
-                    return Ok(successful);
-                }
+                CommonIndex successful = await _user.LoginUser(login);
+                return Ok(successful);
             }
             return Unauthorized();
+        }
+        [HttpGet]
+        [Route("LogOut")]
+        public async Task<bool> LogOut()
+        {
+            AppUser user = await userManager.GetUserAsync(HttpContext.User);
+
+            if (ModelState.IsValid)
+            {
+                bool successful = await _user.LogOut();
+                return true;
+            }
+            return false;
         }
     }
 }
