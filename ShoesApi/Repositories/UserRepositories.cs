@@ -170,6 +170,7 @@ namespace ShoesApi.Repositories
         }
         public async Task<bool> LogOut()
         {
+
             
             var Result = signInManager.SignOutAsync();
             if (Result != null)

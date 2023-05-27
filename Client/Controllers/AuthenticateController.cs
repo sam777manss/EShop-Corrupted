@@ -1,6 +1,9 @@
 ﻿using Client.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace Client.Controllers
 {
@@ -17,6 +20,14 @@ namespace Client.Controllers
         }
         public async Task<IActionResult> LogOutPageAsync()
         {
+            // Retrieve the current user's claims from the HttpContext
+            var user = HttpContext.User;
+
+            // Access the desired claims by their claim type
+            var emailClaim = user.FindFirst(ClaimTypes.Email)?.Value;
+            var passwordClaim = user.FindFirst(ClaimTypes.PrimarySid)?.Value;
+
+
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:7257");
@@ -40,6 +51,23 @@ namespace Client.Controllers
                     var response = await client.PostAsJsonAsync("", login);
                     if(response.IsSuccessStatusCode)
                     {
+
+                        var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Email, login.Email),
+                            new Claim(ClaimTypes.PrimarySid, login.Password),
+                        };
+                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        var authProperties = new AuthenticationProperties
+                        {
+                            ExpiresUtc = DateTime.Now.AddMinutes(10),
+                        };
+
+                        await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity),
+                        authProperties);
+
                         var responseContent = await response.Content.ReadAsStringAsync();
                         CommonIndex? Data = JsonConvert.DeserializeObject<CommonIndex>(responseContent);
                         if(Data.User != null && Data.Roles != null)
