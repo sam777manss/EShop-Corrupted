@@ -33,7 +33,7 @@ namespace Client.Controllers
                 client.BaseAddress = new Uri("https://localhost:7257");
                 var response = await client.GetAsync("/Authenticate/LogOut");
                 var responseContent = await response.Content.ReadAsStringAsync();
-                if(response.IsSuccessStatusCode)
+                    var claims = new List<Claim>
                 {
                     return RedirectToAction("Index", "User");
                 }
