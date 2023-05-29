@@ -24,3 +24,14 @@ AppUser appUser = await userManager.FindByEmailAsync(login.Email);
             validPass = await passwordValidator.ValidateAsync(userManager, user, password);
   
 
+Cookie not working in web api so i created it in mvc controller and after creating cookies
+values also not access able in web api 
+-------------------------------------------------------------------------------------------------------------
+  This doesn't works in web api but works in mvc controller
+
+            var user = HttpContext.User;
+
+            // Access the desired claims by their claim type
+            var passwordClaim = user.FindFirst(ClaimTypes.PrimarySid)?.Value;
+  
+-------------------------------------------------------------------------------------------------------------
