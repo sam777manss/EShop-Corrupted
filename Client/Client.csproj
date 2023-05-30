@@ -28,6 +28,7 @@
     <Folder Include="wwwroot\AdminFiles\" />
     <Folder Include="wwwroot\ClientFiles\" />
     <Folder Include="wwwroot\css\" />
+    <Folder Include="wwwroot\DataTable\" />
     <Folder Include="wwwroot\lib\" />
     <Folder Include="wwwroot\login&amp;signup\" />
   </ItemGroup>

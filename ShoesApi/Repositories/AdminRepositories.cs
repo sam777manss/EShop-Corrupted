@@ -5,7 +5,7 @@ using ShoesApi.Models;
 
 namespace ShoesApi.Repositories
 {
-    public class AdminRepositories: IAdmin
+    public class AdminRepositories : IAdmin
     {
         private UserManager<AppUser> userManager;
         private SignInManager<AppUser> signInManager;

@@ -1,5 +1,21 @@
 ﻿@model List<AdminIndex>
-          <!-- Content wrapper -->
+<!-- DataTable start -->
+@*@{
+    Layout = null;
+}
+*@
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" **important**></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" **important**></script>
+<link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css" rel="stylesheet" type="text/css" **important** />
+
+
+<script>
+    $(document).ready(function () {
+        alert("example");
+        $('#example').DataTable();
+    });
+</script>
+<!-- DataTable start -->
 <div class="content-wrapper">
     <!-- Content -->
 
@@ -10,7 +26,7 @@
         <div class="card">
             <h5 class="card-header">Table Basic</h5>
             <div class="table-responsive text-nowrap">
-                <table class="table">
+                <table class="table" id="example">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -104,4 +120,4 @@
 
     <div class="content-backdrop fade"></div>
 </div>
-<!-- Content wrapper -->
+

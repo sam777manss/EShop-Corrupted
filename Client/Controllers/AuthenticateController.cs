@@ -1,17 +1,16 @@
 ﻿using Client.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Security.Claims;
 using Serilog;
-using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Client.Controllers
 {
     public class AuthenticateController : Controller
     {
-        public static string URL = "https://localhost:7257/"; 
+        public static string URL = "https://localhost:7257/";
         public IActionResult Index()
         {
             return View();
@@ -37,27 +36,27 @@ namespace Client.Controllers
             try
             {
                 // cookies set start
-                    var claims = new List<Claim>
+                var claims = new List<Claim>
                         {
                             new Claim(ClaimTypes.PrimarySid, UserId),
                             new Claim(ClaimTypes.Email, email),
                             new Claim(ClaimTypes.Name, username),
                         };
-                    foreach (var role in roles)
-                    {
-                        claims.Add(new Claim(ClaimTypes.Role, role));
-                    }
+                foreach (var role in roles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role));
+                }
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var authProperties = new AuthenticationProperties
-                    {
-                        ExpiresUtc = DateTime.Now.AddMinutes(1),
-                    };
-                    await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    authProperties);
+                var authProperties = new AuthenticationProperties
+                {
+                    ExpiresUtc = DateTime.Now.AddMinutes(1),
+                };
+                await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Error(ex.InnerException != null ? string.Format("Inner Exception: {0} --- Exception: {1}", ex.InnerException.Message, ex.Message) : ex.Message, ex);
 
@@ -67,17 +66,17 @@ namespace Client.Controllers
         [HttpPost]
         public async Task<IActionResult> LoginPage(Login login)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri(URL+"Authenticate/Login");
+                    client.BaseAddress = new Uri(URL + "Authenticate/Login");
                     var response = await client.PostAsJsonAsync("", login);
-                    if(response.IsSuccessStatusCode)
+                    if (response.IsSuccessStatusCode)
                     {
                         var responseContent = await response.Content.ReadAsStringAsync();
                         CommonIndex? Data = JsonConvert.DeserializeObject<CommonIndex>(responseContent);
-                        if(Data?.UserId != null)
+                        if (Data?.UserId != null)
                         {
                             var userRoles = new List<string>();
                             var user_name = string.Empty;
@@ -136,7 +135,7 @@ namespace Client.Controllers
             {
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri(URL+"Authenticate/RegisterAdmin");
+                    client.BaseAddress = new Uri(URL + "Authenticate/RegisterAdmin");
                     var response = await client.PostAsJsonAsync("", register);
                     if (response.IsSuccessStatusCode)
                     {

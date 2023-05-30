@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShoesApi.Interfaces;
 using ShoesApi.Models;
-using System.Security.Claims;
 
 namespace ShoesApi.Controllers
 {
@@ -9,8 +8,9 @@ namespace ShoesApi.Controllers
     [ApiController]
     public class AdminDataController : ControllerBase
     {
-        private readonly IAdmin admin; 
-        public AdminDataController(IAdmin admin) {
+        private readonly IAdmin admin;
+        public AdminDataController(IAdmin admin)
+        {
             this.admin = admin;
         }
 

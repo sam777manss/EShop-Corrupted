@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ShoesApi.Interfaces;
 using ShoesApi.Models;
-using System.Security.Claims;
 
 namespace ShoesApi.Controllers
 {
@@ -28,7 +26,7 @@ namespace ShoesApi.Controllers
         [Route("Register")]
         public async Task<IActionResult> Register(Register register)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 bool successful = await _user.RegisterUser(register);
                 if (successful)
@@ -47,7 +45,7 @@ namespace ShoesApi.Controllers
             {
                 Response success = await _user.RegisterAdmin(registerAdmin);
 
-                if(success.Message!= null)
+                if (success.Message != null)
                 {
                     return Ok(success);
                 }

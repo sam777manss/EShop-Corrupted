@@ -1,14 +1,12 @@
 ﻿using Client.Models;
 using log4net;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using ShoesApi.Interfaces;
 using ShoesApi.Models;
-using System.Net;
 
 namespace ShoesApi.Repositories
 {
-    public class UserRepositories: IUser
+    public class UserRepositories : IUser
     {
         private UserManager<AppUser> userManager;
         private SignInManager<AppUser> signInManager;
@@ -92,7 +90,7 @@ namespace ShoesApi.Repositories
             {
                 log.Error(ex.InnerException != null ? string.Format("Inner Exception: {0} --- Exception: {1}", ex.InnerException.Message, ex.Message) : ex.Message, ex);
             }
-            return new Response { Status="Something Went Wrong", Message = "User Creation Failed" };
+            return new Response { Status = "Something Went Wrong", Message = "User Creation Failed" };
         }
         #endregion
         public async Task<CommonIndex> LoginUser(Login login)
@@ -156,7 +154,7 @@ namespace ShoesApi.Repositories
                 }
                 else
                 {
-                    Response response = new Response() { Message = "Invalid Email", Status = "401"};
+                    Response response = new Response() { Message = "Invalid Email", Status = "401" };
                     commonIndex = new CommonIndex()
                     {
                         response = response
@@ -173,7 +171,7 @@ namespace ShoesApi.Repositories
         //public async Task<bool> LogOut()
         //{
 
-            
+
         //    var Result = signInManager.SignOutAsync();
         //    if (Result != null)
         //    {

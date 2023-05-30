@@ -2,7 +2,7 @@
 
 namespace ShoesApi.Models
 {
-    public class AppUser: IdentityUser
+    public class AppUser : IdentityUser
     {
     }
 }
