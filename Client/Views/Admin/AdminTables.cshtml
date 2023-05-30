@@ -4,15 +4,38 @@
     Layout = null;
 }
 *@
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" **important**></script>
+<!-- below three are datatable.net require link this are suffient to create datatable -->
+@*<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" **important**></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" **important**></script>
 <link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css" rel="stylesheet" type="text/css" **important** />
+*@
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js" **important**></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js" **important**></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js" **important**></script>
+
+@*<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet" type="text/css" **important** />*@
+<link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" **important** />
 
 
+<!-- datatable.net require link ends -->
 <script>
     $(document).ready(function () {
-        alert("example");
-        $('#example').DataTable();
+        $('#example').DataTable({
+            "aLengthMenu": [[5, 10, 55, -1], [5, 10, 50, "All"]],
+            "iDisplayLength": 25
+            //autoWidth: false,
+            //columnDefs: [
+            //    {
+            //        "aLengthMenu": [[5, 10, 55, -1], [5, 10, 50, "All"]],
+            //        targets: ['_all'],
+            //        className: 'mdc-data-table__cell',
+            //    },
+            //],
+        });
+
+        // Set the width of the wrapper to 100%
+        //$('#example_wrapper').css('width', '100%');
     });
 </script>
 <!-- DataTable start -->
@@ -26,7 +49,7 @@
         <div class="card">
             <h5 class="card-header">Table Basic</h5>
             <div class="table-responsive text-nowrap">
-                <table class="table" id="example">
+                <table class="table table-striped" id="example" style="width:100%">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -92,30 +115,6 @@
     </div>
     <!-- / Content -->
     <!-- Footer -->
-    <footer class="content-footer footer bg-footer-theme">
-        <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-            <div class="mb-2 mb-md-0">
-                ©
-                <script>
-                    document.write(new Date().getFullYear());
-                </script>
-                , made with ❤️ by
-                <a href="https://themeselection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
-            </div>
-            <div>
-                <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a>
-                <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More Themes</a>
-
-                <a href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
-                   target="_blank"
-                   class="footer-link me-4">Documentation</a>
-
-                <a href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
-                   target="_blank"
-                   class="footer-link me-4">Support</a>
-            </div>
-        </div>
-    </footer>
     <!-- / Footer -->
 
     <div class="content-backdrop fade"></div>
