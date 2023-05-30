@@ -39,6 +39,7 @@ namespace ShoesApi.Repositories
                                 Id = user.Id,
                                 Name = user.UserName,
                                 Email = user.Email,
+                                Number = "",
                             };
                             adminIndices.Add(data);
                         }

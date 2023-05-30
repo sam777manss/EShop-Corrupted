@@ -1,4 +1,5 @@
 ﻿using Client.Models;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -24,12 +25,14 @@ namespace Client.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error(Exception ex)
+        public IActionResult Error()
         {
-            return View(new ErrorViewModel { 
+            var exception = HttpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
+            return View(new ErrorViewModel
+            {
                 RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
-                InnerException = ex.InnerException?.Message,
-                Message = (ex.Message!=null? ex.Message: null)
+                InnerException = exception?.InnerException?.Message,
+                Message = exception?.Message
             });
         }
     }

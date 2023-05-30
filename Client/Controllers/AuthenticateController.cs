@@ -77,7 +77,7 @@ namespace Client.Controllers
                     {
                         var responseContent = await response.Content.ReadAsStringAsync();
                         CommonIndex? Data = JsonConvert.DeserializeObject<CommonIndex>(responseContent);
-                        if(Data.UserId != null)
+                        if(Data?.UserId != null)
                         {
                             var userRoles = new List<string>();
                             var user_name = string.Empty;
@@ -87,14 +87,14 @@ namespace Client.Controllers
                             {
                                 userRoles.Add("Admin");
                                 userRoles.Add("User");
-                                user_name = Data.Admin.Name;
-                                email = Data.Admin.Email;
+                                user_name = Data?.Admin?.Name;
+                                email = Data?.Admin?.Email;
                             }
                             else
                             {
                                 userRoles.Add("User");
-                                user_name = Data.User.Name;
-                                email = Data.User.Email;
+                                user_name = Data?.User?.Name;
+                                email = Data?.User?.Email;
                             }
 
                             await CookiesSetUp(Data.UserId, userRoles, user_name, email);
@@ -110,11 +110,11 @@ namespace Client.Controllers
                                     return RedirectToAction("Index", "User", Data.User);
                                 }
                             }
-                            else if (Data.response.Message == "Invalid Email")
+                            else if (Data?.response?.Message == "Invalid Email")
                             {
                                 ModelState.AddModelError("Email", "Email not found");
                             }
-                            else if (Data.response.Message == "Invalid Password")
+                            else if (Data?.response?.Message == "Invalid Password")
                             {
                                 ModelState.AddModelError("Password", "password not valid");
                             }
