@@ -21,6 +21,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUser, UserRepositories>();
+builder.Services.AddScoped<IAdmin, AdminRepositories>();
 builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>

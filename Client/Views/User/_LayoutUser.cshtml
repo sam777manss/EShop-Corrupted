@@ -1,4 +1,8 @@
 ﻿@model UserIndex
+@*//@using System.Security.Claims to access the values present in cookies*@
+@using System.Security.Claims 
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,7 +44,12 @@
                     <span class="text-muted px-2">|</span>
                     <a class="text-dark" href="">Support</a>
                     <span class="text-muted px-2">|</span>
-                    <a class="text-dark" href="">Hi @Model.Name</a>
+                    @{
+                        var nameClaim = User.FindFirst(ClaimTypes.Name);
+                        var name = nameClaim?.Value;
+                    }
+
+                    <a class="text-dark" href="">Hi @name</a>
                 </div>
             </div>
             <div class="col-lg-6 text-center text-lg-right">
@@ -124,6 +133,7 @@
                     </div>
                 </nav>
             </div>
+
             <div class="col-lg-9">
                 <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
                     <a href="" class="text-decoration-none d-block d-lg-none">
@@ -147,18 +157,24 @@
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0">
-                            @*<a href="" class="nav-item nav-link">Login</a>*@
-                            @if(Model != null)
-                            {
-                                @Html.ActionLink("LogOut", "LogOutPage", "Authenticate", null, new {@class = "nav-item nav-link"})
-
+                            @{
+                                bool isAdmin = User.IsInRole("Admin");
                             }
-                            else
+                            @if (isAdmin)
                             {
-                                @Html.ActionLink("Login", "LoginPage", "Authenticate", null, new {@class = "nav-item nav-link"})
-
+                                @Html.ActionLink("Manage", "Index", "Admin", null, new { @class = "nav-item nav-link" });
                             }
-                            @*<a href="" class="nav-item nav-link">Register</a>*@
+                            @{
+                                var logInfo = User.Identity.IsAuthenticated
+                                ? Html.ActionLink("LogOut", "LogOutPage", "Authenticate", null, new { @class = "nav-item nav-link" })
+                                : Html.ActionLink("Login", "LoginPage", "Authenticate", null, new { @class = "nav-item nav-link" });
+                            }
+@*                            @{
+                                var logInfo = Model.Email != null
+                                ? Html.ActionLink("LogOut", "LogOutPage", "Authenticate", null, new { @class = "nav-item nav-link" })
+                                : Html.ActionLink("Login", "LoginPage", "Authenticate", null, new { @class = "nav-item nav-link" });
+                            }*@
+                            @logInfo
                             @Html.ActionLink("Register", "RegisterPage", "Authenticate", null, new {@class = "nav-item nav-link"})
 
                         </div>

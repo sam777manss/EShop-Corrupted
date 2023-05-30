@@ -1,5 +1,5 @@
 ﻿@model AdminIndex
-
+@using System.Security.Claims
 
 <!DOCTYPE html>
 
@@ -501,10 +501,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
-                                                    @if(Model != null)
-                                                    {
-                                                        <span class="fw-semibold d-block">@Model.Name!</span>
+                                                    @{
+                                                        var name = User.FindFirst(ClaimTypes.Name)?.Value;
                                                     }
+                                                        <span class="fw-semibold d-block">@name!</span>
                                                     <small class="text-muted">Admin </small>
                                                 </div>
                                             </div>
@@ -538,7 +538,8 @@
                                         <div class="dropdown-divider"></div>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="auth-login-basic.html">
+                                        @*// here is custom achor  *@
+                                        <a class="dropdown-item" href="/Authenticate/LogOutPage">
                                             <i class="bx bx-power-off me-2"></i>
                                             <span class="align-middle">Log Out</span>
                                         </a>
@@ -551,7 +552,6 @@
                 </nav>
 
                 <!-- / Navbar -->
-                @*RenderBody*@
                 @RenderBody()
             </div>
             <!-- / Layout page -->
@@ -562,11 +562,6 @@
     </div>
     <!-- / Layout wrapper -->
 
-    <div class="buy-now">
-        <a href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/"
-           target="_blank"
-           class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
-    </div>
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->

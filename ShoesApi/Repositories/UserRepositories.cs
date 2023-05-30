@@ -108,6 +108,7 @@ namespace ShoesApi.Repositories
                     Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.PasswordSignInAsync(user, login.Password, true, false);
                     if (result.Succeeded)
                     {
+
                         var roles = await userManager.GetRolesAsync(user);
                         // roles variable contains the roles associated with the user
                         // You can iterate over the roles or perform any other necessary operations  
@@ -141,6 +142,7 @@ namespace ShoesApi.Repositories
                                 User = userIndex
                             };
                         }
+                        commonIndex.UserId = user.Id;
                         return commonIndex;
                     }
                     else
@@ -168,16 +170,16 @@ namespace ShoesApi.Repositories
             }
             return commonIndex;
         }
-        public async Task<bool> LogOut()
-        {
+        //public async Task<bool> LogOut()
+        //{
 
             
-            var Result = signInManager.SignOutAsync();
-            if (Result != null)
-            {
-                return true;
-            }
-            return false;
-        }
+        //    var Result = signInManager.SignOutAsync();
+        //    if (Result != null)
+        //    {
+        //        return true;
+        //    }
+        //    return false;
+        //}
     }
 }

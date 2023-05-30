@@ -10,20 +10,11 @@ namespace ShoesApi.Controllers
     [ApiController]
     public class AuthenticateController : ControllerBase
     {
-        private UserManager<AppUser> userManager;
-        private SignInManager<AppUser> signInManager;
-        private readonly RoleManager<IdentityRole> roleManager;
-
         // Need To be included in constructor all the interfaces and other dbcontext manager
-
         private readonly IUser _user;
         // Need To be included in constructor all the interfaces
-
-        public AuthenticateController(IUser user, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager)
+        public AuthenticateController(IUser user)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-            this.roleManager = roleManager;
             _user = user;
         }
 
@@ -76,18 +67,18 @@ namespace ShoesApi.Controllers
             }
             return Unauthorized();
         }
-        [HttpGet]
-        [Route("LogOut")]
-        public async Task<bool> LogOut()
-        {
-            AppUser user = await userManager.GetUserAsync(HttpContext.User);
+        //[HttpGet]
+        //[Route("LogOut")]
+        //public async Task<bool> LogOut()
+        //{
+        //    AppUser user = await userManager.GetUserAsync(HttpContext.User);
 
-            if (ModelState.IsValid)
-            {
-                bool successful = await _user.LogOut();
-                return true;
-            }
-            return false;
-        }
+        //    if (ModelState.IsValid)
+        //    {
+        //        bool successful = await _user.LogOut();
+        //        return true;
+        //    }
+        //    return false;
+        //}
     }
 }

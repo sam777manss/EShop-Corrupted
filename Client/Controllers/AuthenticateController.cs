@@ -4,11 +4,14 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Security.Claims;
+using Serilog;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Client.Controllers
 {
     public class AuthenticateController : Controller
     {
+        public static string URL = "https://localhost:7257/"; 
         public IActionResult Index()
         {
             return View();
@@ -18,28 +21,49 @@ namespace Client.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> LogOutPageAsync()
+        public async Task<IActionResult> LogOutPage()
         {
             // Retrieve the current user's claims from the HttpContext
             var user = HttpContext.User;
 
             // Access the desired claims by their claim type
-            var emailClaim = user.FindFirst(ClaimTypes.Email)?.Value;
             var passwordClaim = user.FindFirst(ClaimTypes.PrimarySid)?.Value;
 
-
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("https://localhost:7257");
-                var response = await client.GetAsync("/Authenticate/LogOut");
-                var responseContent = await response.Content.ReadAsStringAsync();
-                    var claims = new List<Claim>
-                {
-                    return RedirectToAction("Index", "User");
-                }
-            }
-            return View();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "User");
         }
+        public async Task CookiesSetUp(string UserId, List<string> roles, string username, string email)
+        {
+            try
+            {
+                // cookies set start
+                    var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.PrimarySid, UserId),
+                            new Claim(ClaimTypes.Email, email),
+                            new Claim(ClaimTypes.Name, username),
+                        };
+                    foreach (var role in roles)
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, role));
+                    }
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var authProperties = new AuthenticationProperties
+                    {
+                        ExpiresUtc = DateTime.Now.AddMinutes(1),
+                    };
+                    await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex.InnerException != null ? string.Format("Inner Exception: {0} --- Exception: {1}", ex.InnerException.Message, ex.Message) : ex.Message, ex);
+
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> LoginPage(Login login)
         {
@@ -47,49 +71,54 @@ namespace Client.Controllers
             {
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri("https://localhost:7257/Authenticate/Login");
+                    client.BaseAddress = new Uri(URL+"Authenticate/Login");
                     var response = await client.PostAsJsonAsync("", login);
                     if(response.IsSuccessStatusCode)
                     {
-
-                        var claims = new List<Claim>
-                        {
-                            new Claim(ClaimTypes.Email, login.Email),
-                            new Claim(ClaimTypes.PrimarySid, login.Password),
-                        };
-                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                        var authProperties = new AuthenticationProperties
-                        {
-                            ExpiresUtc = DateTime.Now.AddMinutes(10),
-                        };
-
-                        await HttpContext.SignInAsync(
-                        CookieAuthenticationDefaults.AuthenticationScheme,
-                        new ClaimsPrincipal(claimsIdentity),
-                        authProperties);
-
                         var responseContent = await response.Content.ReadAsStringAsync();
                         CommonIndex? Data = JsonConvert.DeserializeObject<CommonIndex>(responseContent);
-                        if(Data.User != null && Data.Roles != null)
+                        if(Data.UserId != null)
                         {
+                            var userRoles = new List<string>();
+                            var user_name = string.Empty;
+                            var email = string.Empty;
+
                             if (Data.Roles.Contains("Admin"))
                             {
-                                return RedirectToAction("Index", "Admin", Data.Admin);
+                                userRoles.Add("Admin");
+                                userRoles.Add("User");
+                                user_name = Data.Admin.Name;
+                                email = Data.Admin.Email;
                             }
                             else
                             {
-                                return RedirectToAction("Index", "User", Data.User);
+                                userRoles.Add("User");
+                                user_name = Data.User.Name;
+                                email = Data.User.Email;
+                            }
+
+                            await CookiesSetUp(Data.UserId, userRoles, user_name, email);
+                            // cookies set ends
+                            if (Data.User != null && Data.Roles != null)
+                            {
+                                if (Data.Roles.Contains("Admin"))
+                                {
+                                    return RedirectToAction("Index", "User", Data.Admin);
+                                }
+                                else
+                                {
+                                    return RedirectToAction("Index", "User", Data.User);
+                                }
+                            }
+                            else if (Data.response.Message == "Invalid Email")
+                            {
+                                ModelState.AddModelError("Email", "Email not found");
+                            }
+                            else if (Data.response.Message == "Invalid Password")
+                            {
+                                ModelState.AddModelError("Password", "password not valid");
                             }
                         }
-                        else if(Data.response.Message == "Invalid Email")
-                        {
-                            ModelState.AddModelError("Email", "Email not found");
-                        }
-                        else if(Data.response.Message == "Invalid Password")
-                        {
-                            ModelState.AddModelError("Password", "password not valid");
-                        }
-                        //return View(responseContent);
                     }
                 }
             }
@@ -107,13 +136,11 @@ namespace Client.Controllers
             {
                 using (var client = new HttpClient())
                 {
-                    //client.BaseAddress = new Uri("https://localhost:7257/Authenticate/Register");
-                    client.BaseAddress = new Uri("https://localhost:7257/Authenticate/RegisterAdmin");
+                    client.BaseAddress = new Uri(URL+"Authenticate/RegisterAdmin");
                     var response = await client.PostAsJsonAsync("", register);
                     if (response.IsSuccessStatusCode)
                     {
                         var responseContent = await response.Content.ReadAsStringAsync();
-                        //return View(responseContent);
                         return RedirectToAction("LoginPage", "Authenticate");
                     }
                 }

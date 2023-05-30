@@ -8,6 +8,6 @@ namespace ShoesApi.Interfaces
         public Task<bool> RegisterUser(Register register);
         public Task<Response> RegisterAdmin(Register registerAdmin);
         public Task<CommonIndex> LoginUser(Login login);
-        public Task<bool> LogOut();
+        //public Task<bool> LogOut(); logout is in client controller
     }
 }

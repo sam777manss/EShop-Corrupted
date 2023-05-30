@@ -5,6 +5,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+//builder.Services.ConfigureApplicationCookie(opts => opts.LoginPath = "/Authenticate/LoginPage");
+
+
 // Add services to the container.
 builder.Services.AddAuthentication(options =>
 {
@@ -32,9 +35,9 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseRouting();
 // Add authentication middleware
 app.UseAuthentication();
+app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
