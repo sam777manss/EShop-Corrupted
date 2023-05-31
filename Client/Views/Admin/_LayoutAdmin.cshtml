@@ -1,4 +1,4 @@
-﻿ @using System.Security.Claims
+﻿@using System.Security.Claims
 
 <!DOCTYPE html>
 
@@ -30,7 +30,6 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    @*<link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />*@
     <img src="~/adminfiles/assets/img/favicon/favicon.ico" />
 
     <!-- Fonts -->
@@ -51,9 +50,7 @@
     <!-- Page CSS -->
     <!-- Helpers -->
     <script src="~/adminfiles/assets/vendor/js/helpers.js"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    @*<script src="../assets/js/config.js"></script>*@
+
     <script src="~/adminfiles/assets/js/config.js"></script>
 
 
@@ -176,7 +173,7 @@
                         </a>
                         <ul class="menu-sub">
                             <li class="menu-item">
-                                <a href="pages-account-settings-account.html" class="menu-link">
+                                <a href="/Admin/AdminAccount" class="menu-link"> <!-- Admin Account Page -->
                                     <div data-i18n="Account">Account</div>
                                 </a>
                             </li>
@@ -498,7 +495,7 @@
                                                     @{
                                                         var name = User.FindFirst(ClaimTypes.Name)?.Value;
                                                     }
-                                                        <span class="fw-semibold d-block">@name!</span>
+                                                    <span class="fw-semibold d-block">@name!</span>
                                                     <small class="text-muted">Admin </small>
                                                 </div>
                                             </div>
@@ -544,22 +541,16 @@
                         </ul>
                     </div>
                 </nav>
-
                 <!-- / Navbar -->
                 @RenderBody()
             </div>
             <!-- / Layout page -->
         </div>
-
         <!-- Overlay -->
         <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <!-- / Layout wrapper -->
-
-
     <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
-    @*<script src="~/adminfiles/assets/vendor/libs/jquery/jquery.js"></script>*@
     <script src="~/adminfiles/assets/vendor/libs/popper/popper.js"></script>
     <script src="~/adminfiles/assets/vendor/js/bootstrap.js"></script>
     <script src="~/adminfiles/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
@@ -577,7 +568,6 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
-
 
 </body>
 </html>

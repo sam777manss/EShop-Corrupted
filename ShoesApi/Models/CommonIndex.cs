@@ -1,5 +1,4 @@
-﻿using Client.Models;
-
+﻿
 namespace ShoesApi.Models
 {
     public class CommonIndex

@@ -29,9 +29,8 @@ namespace Client.Controllers
 
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri("https://localhost:7257");
-                    //var response = await client.GetAsync($"/AdminData/AdminTables?Uid={Uid}"); // Using string interpolation
-                    var response = await client.GetAsync("/AdminData/AdminTables?Uid=" + Uid); // using concatenation
+                    client.BaseAddress = new Uri(URL);
+                    var response = await client.GetAsync("Admin/AdminTables?Uid=" + Uid); // using concatenation
                     var responseContent = await response.Content.ReadAsStringAsync();
                     List<AdminIndex> users = JsonConvert.DeserializeObject<List<AdminIndex>>(responseContent);
                     if (response.IsSuccessStatusCode)
@@ -49,5 +48,46 @@ namespace Client.Controllers
             return View(new List<AdminIndex>());
         }
         #endregion
+        [HttpGet]
+        public async Task<IActionResult> Edit(string Id)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(URL);
+                var response = await client.GetAsync("Admin/Edit?Id=" + Id); // using concatenation
+                var responseContent = await response.Content.ReadAsStringAsync();
+                UserIndex user = JsonConvert.DeserializeObject<UserIndex>(responseContent);
+                if (response.IsSuccessStatusCode)
+                {
+                    return PartialView("_UserModal", user);
+                }
+            }
+            return PartialView("_UserModal", new UserIndex());
+        }
+        [HttpGet]
+        public async Task<IActionResult> Delete(string Id)
+        {
+            if (Id != null)
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(URL);
+                    var response = await client.DeleteAsync("Admin/Delete?Id=" + Id);
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    if(response.IsSuccessStatusCode)
+                    {
+                        TempData["DeletionMessage"] = "Deletion completed successfully"; 
+                        return RedirectToAction("AdminTables");
+                        //return View(response);
+                    }
+                }
+            }
+            return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> AdminAccount()
+        {
+            return View();
+        }
     }
 }

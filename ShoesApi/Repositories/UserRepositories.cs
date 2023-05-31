@@ -1,5 +1,4 @@
-﻿using Client.Models;
-using log4net;
+﻿using log4net;
 using Microsoft.AspNetCore.Identity;
 using ShoesApi.Interfaces;
 using ShoesApi.Models;

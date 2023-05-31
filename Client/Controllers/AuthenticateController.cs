@@ -49,7 +49,7 @@ namespace Client.Controllers
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var authProperties = new AuthenticationProperties
                 {
-                    ExpiresUtc = DateTime.Now.AddMinutes(1),
+                    ExpiresUtc = DateTime.Now.AddMinutes(10),
                 };
                 await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,

@@ -1,4 +1,4 @@
-﻿namespace Client.Models
+﻿namespace ShoesApi.Models
 {
     public class UserIndex
     {

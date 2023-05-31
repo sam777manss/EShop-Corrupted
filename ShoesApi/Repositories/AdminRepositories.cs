@@ -53,5 +53,51 @@ namespace ShoesApi.Repositories
             }
             return new List<AdminIndex>();
         }
+
+        public async Task<UserIndex> Edit(string Id)
+        {
+            try
+            {
+                AppUser user = await userManager.FindByIdAsync(Id);
+
+                if(user != null)
+                {
+                    UserIndex userIndex = new UserIndex()
+                    {
+                        Id = user.Id,
+                        Name = user.UserName,
+                        Email = user.Email,
+                        Number = "",
+                    };
+                    return userIndex;
+                }
+            }catch(Exception ex)
+            {
+                log.Error(ex.InnerException != null ? string.Format("Inner Exception: {0} --- Exception: {1}", ex.InnerException.Message, ex.Message) : ex.Message, ex);
+            }
+            return new UserIndex();
+        }
+
+        public async Task<bool> Delete(string Id)
+        {
+            try
+            {
+                AppUser user = await userManager.FindByIdAsync(Id);
+                if (user != null)
+                {
+                    IdentityResult result = await userManager.DeleteAsync(user);
+                    if (result.Succeeded)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch(Exception ex)
+            {
+                log.Error(ex.InnerException != null ? string.Format("Inner Exception: {0} --- Exception: {1}", ex.InnerException.Message, ex.Message) : ex.Message, ex);
+            }
+            return false;
+        }
     }
 }
