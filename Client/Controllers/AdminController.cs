@@ -1,9 +1,18 @@
 ﻿using Client.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Serilog;
+using System;
+using System.Net.Http.Headers;
 using System.Security.Claims;
+
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using System.IO;
+
 
 namespace Client.Controllers
 {
@@ -11,6 +20,12 @@ namespace Client.Controllers
     {
         public static string URL = "https://localhost:7257/";
 
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public AdminController(IWebHostEnvironment webHostEnvironment)
+        {
+            _webHostEnvironment = webHostEnvironment;
+        }
         [Authorize(Roles = "Admin")]
         public IActionResult Index(AdminIndex adminIndex)
         {
@@ -49,20 +64,63 @@ namespace Client.Controllers
         }
         #endregion
         [HttpGet]
-        public async Task<IActionResult> Edit(string Id)
+        public async Task<ActionResult> Edit(string Id)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(URL);
                 var response = await client.GetAsync("Admin/Edit?Id=" + Id); // using concatenation
                 var responseContent = await response.Content.ReadAsStringAsync();
-                UserIndex user = JsonConvert.DeserializeObject<UserIndex>(responseContent);
+                AppUser user = JsonConvert.DeserializeObject<AppUser>(responseContent);
                 if (response.IsSuccessStatusCode)
                 {
                     return PartialView("_UserModal", user);
                 }
             }
-            return PartialView("_UserModal", new UserIndex());
+            return PartialView("_UserModal", new AppUser());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> SaveEdits([FromForm] AppUser appUser, IFormFile imageFile) 
+        {
+            try
+            {
+                if (ModelState.IsValid) // true when all values included or when user images exits
+                {
+                    // Create a HttpClient to send the image to the Web API controller
+                    using (var client = new HttpClient())
+                    {
+                        // set the path wwwroot/ImagesFolder
+                        var imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "ImagesFolder", appUser.imageFile.FileName);
+                        // Send the image path to the Web API controller
+                        appUser.imageUrl = appUser.imageFile.FileName;
+                        client.BaseAddress = new Uri(URL + "Admin/SaveEdits");
+                        var response = await client.PostAsJsonAsync("", appUser);
+                        // Handle the response from the Web API controller
+                        if (response.IsSuccessStatusCode)
+                        {
+                            // Save the image to the specified path
+                            using (var stream = new FileStream(imagePath, FileMode.Create))
+                            {
+                                appUser.imageFile.CopyTo(stream);
+                            }
+                            // Image uploaded successfully
+                            return PartialView("_UserModal", appUser);
+                        }
+                        else
+                        {
+                            // Failed to upload the image
+                            ModelState.AddModelError("", "Failed to upload the image");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.InnerException != null ? string.Format("Inner Exception: {0} --- Exception: {1}", ex.InnerException.Message, ex.Message) : ex.Message, ex);
+
+            }
+            return PartialView("_UserModal", appUser);
         }
         [HttpGet]
         public async Task<IActionResult> Delete(string Id)

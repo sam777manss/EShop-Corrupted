@@ -136,31 +136,53 @@
     <div class="content-backdrop fade"></div>
 </div>
 <script type="text/javascript">
-    var TeamDetailPostBackURL = '/Admin/Edit';
     $(function () {
+        debugger;
         $(".details").click(function () {
-            debugger
             var $buttonClicked = $(this);
             var Id = $buttonClicked.attr('data-id');
             $.ajax({
+                url: '/Admin/Edit?Id=' + Id,
                 type: "GET",
-                url: TeamDetailPostBackURL,
-                data: { "Id": Id },
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
+                contentType: false,
+                processData: false,
                 success: function (response) {
-                    $("#partialModal").find(".modal-body").html(response.responseText);
+                    $("#partialModal").find(".modal-body").html(response);
                     $("#partialModal").modal('show');
                 },
-                failure: function (response) {
-                    alert(response.responseText);
-                },
-                error: function (response) {
-                    alert(response.responseText);
-                        $("#partialModal").find(".modal-body").html(response.responseText);
-                    $("#partialModal").modal('show');
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
                 }
             });
         });
     });
+
+    function SaveEdits() {
+    // Prevent the default form submission
+    event.preventDefault();
+    debugger;
+        // Get the form element
+        var form = document.getElementById('formAccountSettings');
+
+        // Create a new FormData object
+        var formData = new FormData(form);    // Make an Ajax request
+    $.ajax({
+        url: '/Admin/SaveEdits',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            // Handle the success response
+            console.log(response);
+                $("#partialModal").find(".modal-body").html(response);
+                $("#partialModal").modal('show');
+        },
+        error: function (xhr, status, error) {
+            // Handle the error response
+
+            console.error(error);
+        }
+    });
+    }
 </script>

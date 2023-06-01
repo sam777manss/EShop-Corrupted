@@ -1,4 +1,5 @@
-﻿using ShoesApi.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using ShoesApi.Models;
 
 namespace ShoesApi.Interfaces
 {
@@ -8,6 +9,8 @@ namespace ShoesApi.Interfaces
 
         public Task<bool> Delete(string Id); 
 
-        public Task<UserIndex> Edit(string Id);
+        public Task<AppUser> Edit(string Id);
+
+        public Task<IActionResult> SaveEdits(AppUser User);
     }
 }

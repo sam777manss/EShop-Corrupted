@@ -26,7 +26,7 @@ namespace ShoesApi.Controllers
         [Route("Edit")]
         public async Task<IActionResult> Edit(string Id)
         {
-            UserIndex adminIndexes = new UserIndex();
+            AppUser adminIndexes = new AppUser();
             adminIndexes = await admin.Edit(Id);
             return Ok(adminIndexes);
         }
@@ -47,5 +47,15 @@ namespace ShoesApi.Controllers
             return new StatusCodeResult(500); // The request was not completed. The server met an unexpected condition.
         }
         #endregion
+
+        [HttpPost]
+        [Route("SaveEdits")]
+        public async Task<IActionResult> SaveEdits(AppUser appUser)
+        {
+            IActionResult result = await admin.SaveEdits(appUser);
+            // Return a response indicating success
+            return new StatusCodeResult(200);
+        }
+
     }
 }

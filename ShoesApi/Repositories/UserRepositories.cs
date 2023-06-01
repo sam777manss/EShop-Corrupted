@@ -66,19 +66,19 @@ namespace ShoesApi.Repositories
                     };
                 }
                 // Find Roles: Admin and User exists or not if not creates
-                //if (!await roleManager.RoleExistsAsync(UserRoles.Admin))
-                //{
-                //    await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
-                //}
+                if (!await roleManager.RoleExistsAsync(UserRoles.Admin))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+                }
                 if (!await roleManager.RoleExistsAsync(UserRoles.User))
                 {
                     await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
                 }
                 // If Roles exists Admin and User assign those roles to user
-                //if (await roleManager.RoleExistsAsync(UserRoles.Admin))
-                //{
-                //    await userManager.AddToRoleAsync(user, UserRoles.Admin);
-                //}
+                if (await roleManager.RoleExistsAsync(UserRoles.Admin))
+                {
+                    await userManager.AddToRoleAsync(user, UserRoles.Admin);
+                }
                 if (await roleManager.RoleExistsAsync(UserRoles.User))
                 {
                     await userManager.AddToRoleAsync(user, UserRoles.User);
