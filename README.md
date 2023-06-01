@@ -25,7 +25,7 @@ AppUser appUser = await userManager.FindByEmailAsync(login.Email);
   
 
 Cookie not working in web api so i created it in mvc controller and after creating cookies
-values also not access able in web api 
+values also not accessible in web api 
 -------------------------------------------------------------------------------------------------------------
   This doesn't works in web api but works in mvc controller
 
