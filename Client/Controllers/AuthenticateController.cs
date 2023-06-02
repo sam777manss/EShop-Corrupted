@@ -106,7 +106,8 @@ namespace Client.Controllers
                                 }
                                 else
                                 {
-                                    return RedirectToAction("Index", "User", Data.User);
+                                    return RedirectToAction("Index", "User"); // no need to pass values extract userdata in user index method
+                                    //return RedirectToAction("Index", "User", Data.User);
                                 }
                             }
                             else if (Data?.response?.Message == "Invalid Email")

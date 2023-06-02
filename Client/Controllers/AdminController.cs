@@ -1,18 +1,9 @@
 ﻿using Client.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Serilog;
-using System;
-using System.Net.Http.Headers;
 using System.Security.Claims;
-
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using System.IO;
-
 
 namespace Client.Controllers
 {

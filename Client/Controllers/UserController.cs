@@ -5,9 +5,9 @@ namespace Client.Controllers
 {
     public class UserController : Controller
     {
-        public IActionResult Index(UserIndex userIndex)
+        public IActionResult Index()
         {
-            return View(userIndex);
+            return View();
         }
     }
 }

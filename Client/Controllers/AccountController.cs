@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers
 {
+    #region account controller is for like unauthorise access(AccessDenied method),  
     public class AccountController : Controller
     {
         public IActionResult Index()
@@ -20,4 +21,5 @@ namespace Client.Controllers
             return View();
         }
     }
+    #endregion
 }
