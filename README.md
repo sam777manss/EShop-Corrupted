@@ -35,5 +35,10 @@ values also not accessible in web api
             var passwordClaim = user.FindFirst(ClaimTypes.PrimarySid)?.Value;
   
 -------------------------------------------------------------------------------------------------------------
-Do not delete the migration. Otherwise new table will be created and data will be lost after migration
+Do not delete the migration files. Otherwise new table will be created and data will be lost after migration
 -------------------------------------------------------------------------------------------------------------
+Difference between AccessDenied and Login page i have created 
+1 when user login successfully but do not have authority to access certain page user will be redirected to Controller ->
+Account/login which is default by .net mvc project i have just created page to show user does not have authority
+2 When without login user try to access authorised pages user wil be redirected to Controller -> Account/AccessDenied
+
