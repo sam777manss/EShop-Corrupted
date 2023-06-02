@@ -31,17 +31,18 @@ namespace Client.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "User");
         }
+
         public async Task CookiesSetUp(string UserId, List<string> roles, string username, string email)
         {
             try
             {
                 // cookies set start
                 var claims = new List<Claim>
-                        {
-                            new Claim(ClaimTypes.PrimarySid, UserId),
-                            new Claim(ClaimTypes.Email, email),
-                            new Claim(ClaimTypes.Name, username),
-                        };
+                {
+                    new Claim(ClaimTypes.PrimarySid, UserId),
+                    new Claim(ClaimTypes.Email, email),
+                    new Claim(ClaimTypes.Name, username),
+                };
                 foreach (var role in roles)
                 {
                     claims.Add(new Claim(ClaimTypes.Role, role));
@@ -49,7 +50,7 @@ namespace Client.Controllers
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var authProperties = new AuthenticationProperties
                 {
-                    ExpiresUtc = DateTime.Now.AddMinutes(10),
+                    ExpiresUtc = DateTime.Now.AddMinutes(10), // user authentication timeout
                 };
                 await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
@@ -102,7 +103,7 @@ namespace Client.Controllers
                             {
                                 if (Data.Roles.Contains("Admin"))
                                 {
-                                    return RedirectToAction("Index", "User", Data.Admin);
+                                    return RedirectToAction("Index", "User");
                                 }
                                 else
                                 {

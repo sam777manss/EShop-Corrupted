@@ -6,10 +6,10 @@
 *@
 
 <!-- below three are datatable.net require link this are suffient to create datatable -->
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" **important**></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" **important**></script>
-<link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css" rel="stylesheet" type="text/css" **important** />
-<!-- datatable.net require link ends -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js" **important**></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js" **important**></script>
+<link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" **important** />
+<!-- datatable.net required link ends -->
 
 <script>
     $(document).ready(function () {
@@ -17,10 +17,8 @@
             "aLengthMenu": [[5, 10, 55, -1], [5, 10, 50, "All"]],
             "iDisplayLength": 25
         });
-
-
     });
-   
+
 </script>
 <!-- DataTable start -->
 <div class="content-wrapper">
@@ -111,14 +109,14 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">Customer Details</h5>
-@*                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
+                                @*                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
                                 </button>*@
                             </div>
                             <div class="modal-body">
                             </div>
-@*                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            @*                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             </div>*@
                         </div>
                     </div>
@@ -136,53 +134,74 @@
     <div class="content-backdrop fade"></div>
 </div>
 <script type="text/javascript">
-    $(function () {
+    if(window.fetch) 
+    {
         debugger;
-        $(".details").click(function () {
-            var $buttonClicked = $(this);
-            var Id = $buttonClicked.attr('data-id');
-            $.ajax({
-                url: '/Admin/Edit?Id=' + Id,
-                type: "GET",
-                contentType: false,
-                processData: false,
-                success: function (response) {
-                    $("#partialModal").find(".modal-body").html(response);
-                    $("#partialModal").modal('show');
-                },
-                error: function (xhr, status, error) {
-                    console.error(xhr.responseText);
-                }
+        $(function () {
+            $(".details").click(function () {
+                var $buttonClicked = $(this);
+                var Id = $buttonClicked.attr('data-id');
+
+                fetch(`/Admin/Edit?Id=${Id}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }).then(response => response.text())
+                    .then(response => {
+                        $("#partialModal").find(".modal-body").html(response);
+                        $("#partialModal").modal('show');
+                    }).catch(error => console.error(error));
             });
         });
-    });
+    }
+    else{
+        debugger;
+        $(function() {
+            $(".details").click(function () {
+                var $buttonClicked = $(this);
+                var Id = $buttonClicked.attr('data-id');
+                $.ajax({
+                    url: '/Admin/Edit?Id=' + Id,
+                    type: "GET",
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        $("#partialModal").find(".modal-body").html(response);
+                        $("#partialModal").modal('show');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    }
 
     function SaveEdits() {
-    // Prevent the default form submission
-    event.preventDefault();
-    debugger;
+        // Prevent the default form submission
+        event.preventDefault();
         // Get the form element
         var form = document.getElementById('formAccountSettings');
 
         // Create a new FormData object
         var formData = new FormData(form);    // Make an Ajax request
-    $.ajax({
-        url: '/Admin/SaveEdits',
-        type: 'POST',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function (response) {
-            // Handle the success response
-            console.log(response);
+        $.ajax({
+            url: '/Admin/SaveEdits',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                // Handle the success response
+                console.log(response);
                 $("#partialModal").find(".modal-body").html(response);
                 $("#partialModal").modal('show');
-        },
-        error: function (xhr, status, error) {
-            // Handle the error response
-
-            console.error(error);
-        }
-    });
+            },
+            error: function (xhr, status, error) {
+                // Handle the error response
+                console.error(error);
+            }
+        });
     }
 </script>

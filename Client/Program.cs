@@ -17,7 +17,7 @@ builder.Services.AddAuthentication(options =>
 .AddCookie(options =>
 {
     options.Cookie.Name = ".AspNetCore.Identity.Application";
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(10); // cookie timeout 
     options.SlidingExpiration = true;
 });
 

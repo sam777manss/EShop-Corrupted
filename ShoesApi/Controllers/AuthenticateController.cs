@@ -22,6 +22,7 @@ namespace ShoesApi.Controllers
         {
             return Ok();
         }
+
         [HttpPost]
         [Route("Register")]
         public async Task<IActionResult> Register(Register register)
@@ -37,6 +38,7 @@ namespace ShoesApi.Controllers
             }
             return Unauthorized();
         }
+
         [HttpPost]
         [Route("RegisterAdmin")]
         public async Task<IActionResult> RegisterAdmin(Register registerAdmin)

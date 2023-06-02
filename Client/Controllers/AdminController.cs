@@ -18,12 +18,12 @@ namespace Client.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
         [Authorize(Roles = "Admin")]
-        public IActionResult Index(AdminIndex adminIndex)
+        public IActionResult Index()
         {
             //AdminIndex adminIndex = new AdminIndex();
-            return View(adminIndex);
+            return View();
         }
-        #region AdminTables fetch all the users 
+        #region fetch all the users 
         public async Task<IActionResult> AdminTables()
         {
             try
@@ -54,6 +54,8 @@ namespace Client.Controllers
             return View(new List<AdminIndex>());
         }
         #endregion
+
+        #region fetch user data using id and return data to partial view
         [HttpGet]
         public async Task<ActionResult> Edit(string Id)
         {
@@ -70,7 +72,9 @@ namespace Client.Controllers
             }
             return PartialView("_UserModal", new AppUser());
         }
+        #endregion
 
+        #region update user details and profile photo
         [HttpPost]
         public async Task<ActionResult> SaveEdits([FromForm] AppUser appUser, IFormFile imageFile) 
         {
@@ -78,29 +82,25 @@ namespace Client.Controllers
             {
                 if (ModelState.IsValid) // true when all values included or when user images exits
                 {
-                    // Create a HttpClient to send the image to the Web API controller
                     using (var client = new HttpClient())
                     {
-                        // set the path wwwroot/ImagesFolder
-                        var imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "ImagesFolder", appUser.imageFile.FileName);
-                        // Send the image path to the Web API controller
+                        // Send the image name to web api
                         appUser.imageUrl = appUser.imageFile.FileName;
                         client.BaseAddress = new Uri(URL + "Admin/SaveEdits");
                         var response = await client.PostAsJsonAsync("", appUser);
                         // Handle the response from the Web API controller
                         if (response.IsSuccessStatusCode)
                         {
+                            var imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "ImagesFolder", appUser.imageFile.FileName);
                             // Save the image to the specified path
                             using (var stream = new FileStream(imagePath, FileMode.Create))
                             {
                                 appUser.imageFile.CopyTo(stream);
                             }
-                            // Image uploaded successfully
                             return PartialView("_UserModal", appUser);
                         }
                         else
                         {
-                            // Failed to upload the image
                             ModelState.AddModelError("", "Failed to upload the image");
                         }
                     }
@@ -113,6 +113,9 @@ namespace Client.Controllers
             }
             return PartialView("_UserModal", appUser);
         }
+        #endregion
+
+        #region Delete user using id
         [HttpGet]
         public async Task<IActionResult> Delete(string Id)
         {
@@ -125,14 +128,15 @@ namespace Client.Controllers
                     var responseContent = await response.Content.ReadAsStringAsync();
                     if(response.IsSuccessStatusCode)
                     {
+                        // TempData flow bidirectional but ViewBag and ViewData flow from controller to view only
                         TempData["DeletionMessage"] = "Deletion completed successfully"; 
                         return RedirectToAction("AdminTables");
-                        //return View(response);
                     }
                 }
             }
             return View();
         }
+        #endregion
         [HttpGet]
         public async Task<IActionResult> AdminAccount()
         {

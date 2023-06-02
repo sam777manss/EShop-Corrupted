@@ -70,13 +70,6 @@ namespace ShoesApi.Repositories
 
                 if(user != null)
                 {
-                    //UserIndex userIndex = new UserIndex()
-                    //{
-                    //    Id = user.Id,
-                    //    Name = user.UserName,
-                    //    Email = user.Email,
-                    //    Number = "",
-                    //};
                     return user;
                 }
             }catch(Exception ex)

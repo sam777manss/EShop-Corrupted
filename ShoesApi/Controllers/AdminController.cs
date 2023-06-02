@@ -14,6 +14,7 @@ namespace ShoesApi.Controllers
             this.admin = admin;
         }
 
+        #region fetch all user info
         [HttpGet]
         [Route("AdminTables")]
         public async Task<IActionResult> AdminTables(string Uid)
@@ -22,6 +23,9 @@ namespace ShoesApi.Controllers
             adminIndexes = await admin.AdminTables(Uid);
             return Ok(adminIndexes);
         }
+        #endregion
+
+        #region fetch user data using id
         [HttpGet]
         [Route("Edit")]
         public async Task<IActionResult> Edit(string Id)
@@ -30,8 +34,9 @@ namespace ShoesApi.Controllers
             adminIndexes = await admin.Edit(Id);
             return Ok(adminIndexes);
         }
+        #endregion
 
-        #region Delete a user
+        #region Delete a user using id
         [HttpDelete]
         [Route("Delete")]
         public async Task<IActionResult> Delete(string Id)
@@ -48,6 +53,7 @@ namespace ShoesApi.Controllers
         }
         #endregion
 
+        #region update user data
         [HttpPost]
         [Route("SaveEdits")]
         public async Task<IActionResult> SaveEdits(AppUser appUser)
@@ -56,6 +62,6 @@ namespace ShoesApi.Controllers
             // Return a response indicating success
             return new StatusCodeResult(200);
         }
-
+        #endregion
     }
 }
