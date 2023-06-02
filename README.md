@@ -35,4 +35,5 @@ values also not accessible in web api
             var passwordClaim = user.FindFirst(ClaimTypes.PrimarySid)?.Value;
   
 -------------------------------------------------------------------------------------------------------------
-# Do not delete the migration. Otherwise new table will be created and data will be lost after migration
+Do not delete the migration. Otherwise new table will be created and data will be lost after migration
+-------------------------------------------------------------------------------------------------------------
