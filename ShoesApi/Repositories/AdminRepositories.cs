@@ -10,21 +10,22 @@ namespace ShoesApi.Repositories
     {
         private UserManager<AppUser> userManager;
         private SignInManager<AppUser> signInManager;
-        private readonly RoleManager<IdentityRole> roleManager;
         private static readonly ILog log = LogManager.GetLogger(typeof(UserRepositories));
 
         private IUserValidator<AppUser> userValidator;
         // userValidator validate email and user name
         private IPasswordValidator<AppUser> passwordValidator;
+
+
+
         public AdminRepositories(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, 
-            RoleManager<IdentityRole> roleManager, IUserValidator<AppUser> userValidator, IPasswordValidator<AppUser> passwordValidator)
+            IUserValidator<AppUser> userValidator, IPasswordValidator<AppUser> passwordValidator)
         {
             this.userValidator = userValidator; 
             this.passwordValidator = passwordValidator;
 
             this.userManager = userManager;
             this.signInManager = signInManager;
-            this.roleManager = roleManager;
         }
 
         public async Task<List<AdminIndex>> AdminTables(string Uid)
@@ -139,5 +140,6 @@ namespace ShoesApi.Repositories
             }
             return new StatusCodeResult(500);
         }
+
     }
 }

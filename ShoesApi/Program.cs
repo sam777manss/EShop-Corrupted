@@ -22,6 +22,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUser, UserRepositories>();
 builder.Services.AddScoped<IAdmin, AdminRepositories>();
+builder.Services.AddScoped<IRoles, RolesRepositories>();
+
 builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
