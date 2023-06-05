@@ -1,14 +1,12 @@
 ﻿using log4net;
 using Microsoft.AspNetCore.Identity;
-using ShoesApi.Models;
-using log4net;
-using ShoesApi.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ShoesApi.Interfaces;
+using ShoesApi.Models;
 
 namespace ShoesApi.Repositories
 {
-    public class RolesRepositories: IRoles
+    public class RolesRepositories : IRoles
     {
         private RoleManager<IdentityRole> roleManager;
         private UserManager<AppUser> userManager;
@@ -96,7 +94,7 @@ namespace ShoesApi.Repositories
                 }
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error(ex.InnerException != null ? string.Format("Inner Exception: {0} --- Exception: {1}", ex.InnerException.Message, ex.Message) : ex.Message, ex);
 
@@ -105,11 +103,11 @@ namespace ShoesApi.Repositories
         }
 
         public async Task<bool> Create(string name)
-         {
+        {
             try
             {
                 IdentityResult result = await roleManager.CreateAsync(new IdentityRole(name));
-                if(result.Succeeded)
+                if (result.Succeeded)
                 {
                     return true;
                 }
@@ -129,12 +127,12 @@ namespace ShoesApi.Repositories
                 IdentityRole role = await roleManager.FindByIdAsync(Id);
                 if (role != null)
                 {
-                IdentityResult result = await roleManager.DeleteAsync(role);
-                if (result.Succeeded)
-                {
-                    return true;
-                }
-                else { return false; }
+                    IdentityResult result = await roleManager.DeleteAsync(role);
+                    if (result.Succeeded)
+                    {
+                        return true;
+                    }
+                    else { return false; }
                 }
             }
             catch (Exception ex)

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ShoesApi.Interfaces;
 using ShoesApi.Models;
 
@@ -10,7 +9,8 @@ namespace ShoesApi.Controllers
     public class RolesController : ControllerBase
     {
         private readonly IRoles rolesData;
-        public RolesController(IRoles rolesData) {
+        public RolesController(IRoles rolesData)
+        {
             this.rolesData = rolesData;
         }
 

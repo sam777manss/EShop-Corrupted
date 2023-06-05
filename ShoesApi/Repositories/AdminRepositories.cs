@@ -18,10 +18,10 @@ namespace ShoesApi.Repositories
 
 
 
-        public AdminRepositories(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, 
+        public AdminRepositories(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
             IUserValidator<AppUser> userValidator, IPasswordValidator<AppUser> passwordValidator)
         {
-            this.userValidator = userValidator; 
+            this.userValidator = userValidator;
             this.passwordValidator = passwordValidator;
 
             this.userManager = userManager;
@@ -49,6 +49,7 @@ namespace ShoesApi.Repositories
                                 Name = user.UserName,
                                 Email = user.Email,
                                 Number = "",
+                                ImageUrl = user.imageUrl
                             };
                             adminIndices.Add(data);
                         }
@@ -69,11 +70,12 @@ namespace ShoesApi.Repositories
             {
                 AppUser user = await userManager.FindByIdAsync(Id);
 
-                if(user != null)
+                if (user != null)
                 {
                     return user;
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 log.Error(ex.InnerException != null ? string.Format("Inner Exception: {0} --- Exception: {1}", ex.InnerException.Message, ex.Message) : ex.Message, ex);
             }
@@ -95,7 +97,7 @@ namespace ShoesApi.Repositories
                     return false;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error(ex.InnerException != null ? string.Format("Inner Exception: {0} --- Exception: {1}", ex.InnerException.Message, ex.Message) : ex.Message, ex);
             }
@@ -134,7 +136,7 @@ namespace ShoesApi.Repositories
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error(ex.InnerException != null ? string.Format("Inner Exception: {0} --- Exception: {1}", ex.InnerException.Message, ex.Message) : ex.Message, ex);
             }

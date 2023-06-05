@@ -76,7 +76,7 @@ namespace Client.Controllers
 
         #region update user details and profile photo
         [HttpPost]
-        public async Task<ActionResult> SaveEdits([FromForm] AppUser appUser, IFormFile imageFile) 
+        public async Task<ActionResult> SaveEdits([FromForm] AppUser appUser, IFormFile imageFile)
         {
             try
             {
@@ -126,10 +126,10 @@ namespace Client.Controllers
                     client.BaseAddress = new Uri(URL);
                     var response = await client.DeleteAsync("Admin/Delete?Id=" + Id);
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    if(response.IsSuccessStatusCode)
+                    if (response.IsSuccessStatusCode)
                     {
                         // TempData flow bidirectional but ViewBag and ViewData flow from controller to view only
-                        TempData["DeletionMessage"] = "Deletion completed successfully"; 
+                        TempData["DeletionMessage"] = "Deletion completed successfully";
                         return RedirectToAction("AdminTables");
                     }
                 }

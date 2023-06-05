@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ShoesApi.Models;
+﻿using ShoesApi.Models;
 
 namespace ShoesApi.Interfaces
 {

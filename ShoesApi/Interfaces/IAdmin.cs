@@ -7,7 +7,7 @@ namespace ShoesApi.Interfaces
     {
         public Task<List<AdminIndex>> AdminTables(string Uid);
 
-        public Task<bool> Delete(string Id); 
+        public Task<bool> Delete(string Id);
 
         public Task<AppUser> Edit(string Id);
 

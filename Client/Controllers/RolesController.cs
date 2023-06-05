@@ -1,10 +1,7 @@
 ﻿using Client.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Policy;
 
 namespace Client.Controllers
 {
@@ -86,7 +83,7 @@ namespace Client.Controllers
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(URL);
-                var response = await client.GetAsync("Roles/Create?rolename="+ rolename);
+                var response = await client.GetAsync("Roles/Create?rolename=" + rolename);
                 var responseContent = await response.Content.ReadAsStringAsync();
                 bool user = JsonConvert.DeserializeObject<bool>(responseContent);
             }

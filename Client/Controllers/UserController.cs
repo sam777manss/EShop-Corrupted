@@ -1,5 +1,4 @@
-﻿using Client.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Controllers
 {

@@ -41,10 +41,10 @@ namespace ShoesApi.Controllers
         [Route("Delete")]
         public async Task<IActionResult> Delete(string Id)
         {
-            if(Id != null)
+            if (Id != null)
             {
                 bool flag = await admin.Delete(Id);
-                if(flag)
+                if (flag)
                 {
                     return new StatusCodeResult(204); // Deletion completed but return void status
                 }
