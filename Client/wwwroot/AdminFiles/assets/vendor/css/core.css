@@ -15794,8 +15794,8 @@ html:not(.layout-footer-fixed) .content-wrapper {
 }
 
 .avatar-xs {
-  width: 2.625rem;
-  height: 2.625rem;
+  width: 2.625rem !important;
+  height: 2.625rem !important;
 }
 .avatar-xs .avatar-initial {
   font-size: 0.625rem;
@@ -15871,6 +15871,7 @@ html:not(.layout-footer-fixed) .content-wrapper {
 .avatar-group .avatar:hover {
   z-index: 30;
   transition: all 0.25s ease;
+  transform: scale(3.0) !important;
 }
 .avatar-group .avatar {
   margin-left: -0.8rem;

@@ -143,5 +143,40 @@ namespace Client.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ProductUpload()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ProductUpload([FromForm] AddProduct addProduct)
+        {
+            try
+            {
+                foreach (var file in addProduct.Files)
+                {
+                    using (var client = new HttpClient())
+                    {
+                        // Send the image name to web api
+                        client.BaseAddress = new Uri(URL + "Admin/ProductUpload");
+                        var response = await client.PostAsJsonAsync("", addProduct);
+                        // Handle the response from the Web API controller
+                        if (response.IsSuccessStatusCode)
+                        {
+                            ModelState.AddModelError("", "Failed to upload the image");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Failed to upload the image");
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex.InnerException != null ? string.Format("Inner Exception: {0} --- Exception: {1}", ex.InnerException.Message, ex.Message) : ex.Message, ex);
+            }
+            return View();
+        }
     }
 }

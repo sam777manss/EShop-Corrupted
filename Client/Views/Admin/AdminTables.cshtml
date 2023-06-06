@@ -10,6 +10,7 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js" **important**></script>
 <link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" **important** />
 <!-- datatable.net required link ends -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <script>
     $(document).ready(function () {
@@ -65,23 +66,22 @@
                                             data-popup="tooltip-custom"
                                             data-bs-placement="top"
                                             class="avatar avatar-xs pull-up"
-                                            title="Lilian Fuller">
+                                            title="">
                                             @{
+                                                var imageUrl = adminIndex.ImageUrl;
+                                                var imagePath = string.IsNullOrEmpty(adminIndex.ImageUrl)
+                                                ?"/ImagesFolder/ProfileIcon.png" : $"/ImagesFolder/{imageUrl}";
+                                            }
+                                            <img src="@imagePath" alt="Avatar" class="rounded-circle" />
+                                            @*<img src="~/ImagesFolder/@adminIndex.ImageUrl" alt="Avatar" class="rounded-circle" />*@
                                         </li>
-                                        <li data-bs-toggle="tooltip"
+@*                                        <li data-bs-toggle="tooltip"
                                             data-popup="tooltip-custom"
                                             data-bs-placement="top"
                                             class="avatar avatar-xs pull-up"
                                             title="Sophia Wilkerson">
                                             <img src="~/adminfiles/assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
-                                        </li>
-                                        <li data-bs-toggle="tooltip"
-                                            data-popup="tooltip-custom"
-                                            data-bs-placement="top"
-                                            class="avatar avatar-xs pull-up"
-                                            title="Christina Parker">
-                                            <img src="~/adminfiles/assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
-                                        </li>
+                                        </li>*@
                                     </ul>
                                 </td>
                                 <td><span class="badge bg-label-primary me-1">Active</span></td>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShoesApi.DbContextFile.DBFiles;
 using ShoesApi.Models;
 
 namespace ShoesApi.Interfaces
@@ -12,5 +13,7 @@ namespace ShoesApi.Interfaces
         public Task<AppUser> Edit(string Id);
 
         public Task<IActionResult> SaveEdits(AppUser User);
+
+        public Task<IActionResult> AddProduct(AddProduct product);
     }
 }

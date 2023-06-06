@@ -1,6 +1,7 @@
 ﻿using log4net;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ShoesApi.DbContextFile.DBFiles;
 using ShoesApi.Interfaces;
 using ShoesApi.Models;
 
@@ -137,6 +138,18 @@ namespace ShoesApi.Repositories
                 }
             }
             catch (Exception ex)
+            {
+                log.Error(ex.InnerException != null ? string.Format("Inner Exception: {0} --- Exception: {1}", ex.InnerException.Message, ex.Message) : ex.Message, ex);
+            }
+            return new StatusCodeResult(500);
+        }
+        public async Task<IActionResult> AddProduct(AddProduct product)
+        {
+            try
+            {
+
+            }
+            catch(Exception ex)
             {
                 log.Error(ex.InnerException != null ? string.Format("Inner Exception: {0} --- Exception: {1}", ex.InnerException.Message, ex.Message) : ex.Message, ex);
             }

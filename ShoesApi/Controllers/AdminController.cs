@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShoesApi.DbContextFile.DBFiles;
 using ShoesApi.Interfaces;
 using ShoesApi.Models;
 
@@ -63,6 +64,15 @@ namespace ShoesApi.Controllers
             return new StatusCodeResult(200);
         }
         #endregion
-
+        #region update user data
+        [HttpPost]
+        [Route("AddProduct")]
+        public async Task<IActionResult> AddProduct([FromForm] AddProduct product)
+        {
+            IActionResult result = await admin.AddProduct(product);
+            // Return a response indicating success
+            return new StatusCodeResult(200);
+        }
+        #endregion
     }
 }

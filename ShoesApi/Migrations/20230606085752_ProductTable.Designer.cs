@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoesApi.DbContextFile;
 
@@ -11,9 +12,10 @@ using ShoesApi.DbContextFile;
 namespace ShoesApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230606085752_ProductTable")]
+    partial class ProductTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,9 +159,6 @@ namespace ShoesApi.Migrations
 
             modelBuilder.Entity("ShoesApi.DbContextFile.DBFiles.AddProduct", b =>
                 {
-                    b.Property<Guid?>("GroupId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("ProductCategory")
                         .HasColumnType("nvarchar(max)");
 
@@ -182,9 +181,6 @@ namespace ShoesApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VendorEmail")
                         .HasColumnType("nvarchar(max)");
 
                     b.ToTable("Products");
