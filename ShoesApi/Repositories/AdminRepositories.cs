@@ -1,9 +1,13 @@
 ﻿using log4net;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ShoesApi.DbContextFile;
 using ShoesApi.DbContextFile.DBFiles;
 using ShoesApi.Interfaces;
 using ShoesApi.Models;
+using System.Text.RegularExpressions;
 
 namespace ShoesApi.Repositories
 {
@@ -17,16 +21,21 @@ namespace ShoesApi.Repositories
         // userValidator validate email and user name
         private IPasswordValidator<AppUser> passwordValidator;
 
-
-
+        private readonly ApplicationDbContext context;
+        private readonly IWebHostEnvironment _webHostEnvironment; // image
+ 
         public AdminRepositories(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
-            IUserValidator<AppUser> userValidator, IPasswordValidator<AppUser> passwordValidator)
+            IUserValidator<AppUser> userValidator, IPasswordValidator<AppUser> passwordValidator,
+            ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             this.userValidator = userValidator;
             this.passwordValidator = passwordValidator;
 
             this.userManager = userManager;
             this.signInManager = signInManager;
+
+            this.context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<List<AdminIndex>> AdminTables(string Uid)
@@ -148,6 +157,44 @@ namespace ShoesApi.Repositories
             try
             {
 
+                Guid? newGroupId = Guid.NewGuid();
+                // Create a new instance of Product using the data from the AddProduct object
+                var newProduct = new AddProductTable
+                {
+                    ProductName = product.ProductName,
+                    ProductDescription = product.ProductDescription,
+                    ProductType = product.ProductType,
+                    ProductCategory = product.ProductCategory,
+                    ProductCategoryType = product.ProductCategoryType,
+                    ProductCategoryDescription = product.ProductCategoryDescription,
+                    VendorEmail = product.VendorEmail,
+                    GroupId = newGroupId
+                };
+                // Save the image files to a storage location (e.g., disk, cloud storage)
+                foreach (var file in product.Files)
+                {
+                    //string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    //string filePath = Path.Combine(_webHostEnvironment.WebRootPath, "ImagesFolder", fileName);
+                    //using (var stream = new FileStream(filePath, FileMode.Create))
+                    //{
+                    //    await file.CopyToAsync(stream);
+                    //}
+                    // Save the newProduct to the database
+                    newProduct.ImageUrl = file.FileName;
+                    context.AddProductTable.Add(newProduct);
+                    await context.SaveChangesAsync();
+
+                    // Get the ID of the newly created product
+                    //Guid? newProductId = newProduct.ProductId;
+                    // Update the ImageUrl property of the product with the file path or URL
+                    //newProduct.ImageUrl.Add(filePath);
+                    // If you are storing the image URL instead of the file path, update the property accordingly
+                    // newProduct.ImageUrl = "YourImageUrl";
+                }
+
+                // Update the product in the database with the image URL
+                //context.AddProductTable.Update(newProduct);
+                //await context.SaveChangesAsync();
             }
             catch(Exception ex)
             {

@@ -144,31 +144,64 @@ namespace Client.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ProductUpload()
+        public async Task<IActionResult> AddProduct()
         {
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> ProductUpload([FromForm] AddProduct addProduct)
+        public async Task<IActionResult> AddProduct([FromForm] AddProduct addProduct)
         {
             try
             {
-                foreach (var file in addProduct.Files)
+                using (var client = new HttpClient())
                 {
-                    using (var client = new HttpClient())
+                    // Set the base address of the Web API endpoint
+                    client.BaseAddress = new Uri(URL + "Admin/AddProduct");
+
+                    // Create a new instance of MultipartFormDataContent
+                    var multiContent = new MultipartFormDataContent();
+
+                    // Add the fields from the AddProduct object
+                    multiContent.Add(new StringContent(addProduct.ProductName ?? ""), "ProductName");
+                    multiContent.Add(new StringContent(addProduct.ProductDescription ?? ""), "ProductDescription");
+                    multiContent.Add(new StringContent(addProduct.ProductType ?? ""), "ProductType");
+                    multiContent.Add(new StringContent(addProduct.ProductCategory ?? ""), "ProductCategory");
+                    multiContent.Add(new StringContent(addProduct.ProductCategoryType ?? ""), "ProductCategoryType");
+                    multiContent.Add(new StringContent(addProduct.ProductCategoryDescription ?? ""), "ProductCategoryDescription");
+                    multiContent.Add(new StringContent(addProduct.VendorEmail ?? ""), "VendorEmail");
+
+                    // Convert the AddProduct object to JSON and add it as a StringContent
+                    var addProductJson = JsonConvert.SerializeObject(addProduct);
+                    multiContent.Add(new StringContent(addProductJson), "addProduct");
+
+                    // Add the image files
+                    foreach (var file in addProduct.Files)
                     {
-                        // Send the image name to web api
-                        client.BaseAddress = new Uri(URL + "Admin/ProductUpload");
-                        var response = await client.PostAsJsonAsync("", addProduct);
-                        // Handle the response from the Web API controller
-                        if (response.IsSuccessStatusCode)
+                        var fileContent = new StreamContent(file.OpenReadStream());
+                        multiContent.Add(fileContent, "Files", file.FileName);
+                    }
+
+                    // Send the HTTP POST request to the Web API
+                    var response = await client.PostAsync("", multiContent);
+
+                    // Add the image files to the wwwroot folder
+                    foreach (var file in addProduct.Files)
+                    {
+                        var imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "ImagesFolder", file.FileName);
+                        // Save the image to the specified path
+                        using (var stream = new FileStream(imagePath, FileMode.Create))
                         {
-                            ModelState.AddModelError("", "Failed to upload the image");
+                            file.CopyTo(stream);
                         }
-                        else
-                        {
-                            ModelState.AddModelError("", "Failed to upload the image");
-                        }
+                    }
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        ModelState.AddModelError("", "Failed to upload the image");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Failed to upload the image");
                     }
                 }
             }

@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShoesApi.DbContextFile.DBFiles
 {
-    [Keyless]
     public partial class AddProductTable
     {
+        [Key]
         public Guid? ProductId { get; set;}
         public Guid? GroupId { get; set;}
         public string? ProductName { get; set; }
@@ -15,11 +15,11 @@ namespace ShoesApi.DbContextFile.DBFiles
         public string? ProductCategory { get; set; }
         public string? ProductCategoryDescription { get; set; }
         public string? ProductCategoryType { get; set; }
-        public string? ProductCategoryName { get; set; }
+        //public string? ProductCategoryName { get; set; }
         [Required(ErrorMessage = "Please select files")]
         [NotMapped]
         public List<IFormFile>? Files { get; set; }
         public string? VendorEmail { get; set; }
-        public List<string>? ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
     }
 }
