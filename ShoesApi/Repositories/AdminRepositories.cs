@@ -1,13 +1,10 @@
 ﻿using log4net;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using ShoesApi.DbContextFile;
 using ShoesApi.DbContextFile.DBFiles;
 using ShoesApi.Interfaces;
 using ShoesApi.Models;
-using System.Text.RegularExpressions;
 
 namespace ShoesApi.Repositories
 {
@@ -23,7 +20,7 @@ namespace ShoesApi.Repositories
 
         private readonly ApplicationDbContext context;
         private readonly IWebHostEnvironment _webHostEnvironment; // image
- 
+
         public AdminRepositories(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
             IUserValidator<AppUser> userValidator, IPasswordValidator<AppUser> passwordValidator,
             ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
@@ -196,7 +193,7 @@ namespace ShoesApi.Repositories
                 //context.AddProductTable.Update(newProduct);
                 //await context.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error(ex.InnerException != null ? string.Format("Inner Exception: {0} --- Exception: {1}", ex.InnerException.Message, ex.Message) : ex.Message, ex);
             }

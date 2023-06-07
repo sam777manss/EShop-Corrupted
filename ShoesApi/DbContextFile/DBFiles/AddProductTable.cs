@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShoesApi.DbContextFile.DBFiles
@@ -7,8 +6,8 @@ namespace ShoesApi.DbContextFile.DBFiles
     public partial class AddProductTable
     {
         [Key]
-        public Guid? ProductId { get; set;}
-        public Guid? GroupId { get; set;}
+        public Guid? ProductId { get; set; }
+        public Guid? GroupId { get; set; }
         public string? ProductName { get; set; }
         public string? ProductDescription { get; set; }
         public string? ProductType { get; set; }

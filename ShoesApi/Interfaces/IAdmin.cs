@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShoesApi.DbContextFile.DBFiles;
 using ShoesApi.Models;
 
 namespace ShoesApi.Interfaces
