@@ -1,6 +1,14 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddMvc(options =>
+{
+    options.Filters.Add(new RequireHttpsAttribute());
+    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

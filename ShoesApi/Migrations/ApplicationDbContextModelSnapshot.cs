@@ -193,6 +193,23 @@ namespace ShoesApi.Migrations
                     b.ToTable("AddProductTable");
                 });
 
+            modelBuilder.Entity("ShoesApi.DbContextFile.DBFiles.ProductImageTable", b =>
+                {
+                    b.Property<Guid?>("ProductId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("GroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProductId");
+
+                    b.ToTable("ProductImageTable");
+                });
+
             modelBuilder.Entity("ShoesApi.Models.AppUser", b =>
                 {
                     b.Property<string>("Id")

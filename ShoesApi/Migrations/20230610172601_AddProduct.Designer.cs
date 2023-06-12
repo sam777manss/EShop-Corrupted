@@ -12,8 +12,8 @@ using ShoesApi.DbContextFile;
 namespace ShoesApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230607121937_MultiImage")]
-    partial class MultiImage
+    [Migration("20230610172601_AddProduct")]
+    partial class AddProduct
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -193,6 +193,23 @@ namespace ShoesApi.Migrations
                     b.HasKey("ProductId");
 
                     b.ToTable("AddProductTable");
+                });
+
+            modelBuilder.Entity("ShoesApi.DbContextFile.DBFiles.ProductImageTable", b =>
+                {
+                    b.Property<Guid?>("ProductId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("GroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProductId");
+
+                    b.ToTable("ProductImageTable");
                 });
 
             modelBuilder.Entity("ShoesApi.Models.AppUser", b =>

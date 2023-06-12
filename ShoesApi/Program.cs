@@ -4,6 +4,8 @@ using ShoesApi.DbContextFile;
 using ShoesApi.Interfaces;
 using ShoesApi.Models;
 using ShoesApi.Repositories;
+using Microsoft.Extensions.Configuration;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,21 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication()
+.AddFacebook(fbOptions => {
+    fbOptions.AppId = builder.Configuration.GetSection("FacebookAuthSettings").GetValue<string>("AppId");
+    fbOptions.AppSecret = builder.Configuration.GetSection("FacebookAuthSettings").GetValue<string>("AppSecret");
+    fbOptions.CallbackPath = "/signin-facebook";
+});
+
+// Add Facebook authentication
+//builder.Services.AddAuthentication()    
+//    .AddFacebook(facebookOptions =>
+//    {
+//        facebookOptions.AppId = "<your_app_id>";
+//        facebookOptions.AppSecret = "<your_app_secret>";
+//    });
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -26,15 +43,28 @@ builder.Services.AddScoped<IRoles, RolesRepositories>();
 
 builder.Services.AddAuthorization();
 
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("MyAllowPolicy",
+//        build =>
+//        {
+//            build.WithOrigins("https://localhost:7109", "https://localhost:0000", "https://localhost:7257", "https://www.facebook.com").AllowAnyMethod()
+//                   .AllowAnyHeader();
+//        });
+//});
+
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("MyAllowPolicy",
-        build =>
+        builder =>
         {
-            build.WithOrigins("https://localhost:7109", "https://localhost:0000").AllowAnyMethod()
+            builder.WithOrigins("https://localhost:7257")
+                   .AllowAnyMethod()
                    .AllowAnyHeader();
         });
 });
+
 
 // --- set session time out starts --- //
 builder.Services.ConfigureApplicationCookie(options =>
@@ -56,9 +86,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("MyAllowPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCors("MyAllowPolicy");
+
 
 
 app.MapControllers();
