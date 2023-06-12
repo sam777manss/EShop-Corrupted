@@ -5,6 +5,7 @@ using ShoesApi.Interfaces;
 using ShoesApi.Models;
 using ShoesApi.Repositories;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,10 +19,17 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication()
-.AddFacebook(fbOptions => {
-    fbOptions.AppId = builder.Configuration.GetSection("FacebookAuthSettings").GetValue<string>("AppId");
-    fbOptions.AppSecret = builder.Configuration.GetSection("FacebookAuthSettings").GetValue<string>("AppSecret");
+.AddFacebook(fbOptions =>
+{
+    fbOptions.AppId = "647586333933322";
+    fbOptions.AppSecret = "f20cf9e8312bd9bc92fda6845e46ef81";
     fbOptions.CallbackPath = "/signin-facebook";
+})
+.AddGoogle(googleOptions =>
+{
+    googleOptions.ClientId = "878751051266-eoa97p3i79fb4vtlg51uspv9gg6q0pu2.apps.googleusercontent.com";
+    googleOptions.ClientSecret = "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";
+    googleOptions.CallbackPath = "/signin-google"; // Specify the callback path
 });
 
 // Add Facebook authentication
@@ -59,7 +67,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("MyAllowPolicy",
         builder =>
         {
-            builder.WithOrigins("https://localhost:7257")
+            builder.AllowAnyOrigin()
                    .AllowAnyMethod()
                    .AllowAnyHeader();
         });

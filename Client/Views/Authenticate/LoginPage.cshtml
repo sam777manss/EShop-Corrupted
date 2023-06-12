@@ -29,6 +29,7 @@
                     <div class="signin-image">
                         <figure><img src="~/login&signup/images/signin-image.jpg" alt="sing up image"></figure>
                         @*<a href="#" class="signup-image-link">Create an account</a>*@
+
                         @Html.ActionLink("Create an account", "RegisterPage", "Authenticate", null, new { @class = "signup-image-link"})
                     </div>
 
@@ -57,11 +58,14 @@
                         <div class="social-login">
                             <span class="social-label">Or login with</span>
                             <ul class="socials">
-                                <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+                                @Html.ActionLink("Google Login", "GoogleLogin", "ExternalLogin", null, new { @class = "signup-image-link"})
+
+                                <li><a href="/ExternalLogin/GoogleLogin"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
                                 <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
                                 <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
                             </ul>
                         </div>
+
                     </div>
                 </div>
             </div>

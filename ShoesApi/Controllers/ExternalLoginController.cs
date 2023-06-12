@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ShoesApi.Models;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ShoesApi.Controllers
@@ -46,6 +47,35 @@ namespace ShoesApi.Controllers
                 // User is not registered, handle registration or show an error message
                 return NotFound("User not found.");
             }
+        }
+
+        [AllowAnonymous]
+        [HttpGet("GoogleLogin")]
+        public async Task<IActionResult> GoogleLogin()
+        {
+            string redirectUrl = Url.Action("GoogleResponse", "ExternalLogin");
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
+            return new ChallengeResult("Google", properties);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("GoogleResponse")]
+        public async Task<IActionResult> GoogleResponse()
+        {
+            ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+                return RedirectToAction(nameof(Login));
+
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+            string[] userInfo = { info.Principal.FindFirst(ClaimTypes.Name).Value, info.Principal.FindFirst(ClaimTypes.Email).Value };
+
+                AppUser user = new AppUser
+                {
+                    Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
+                    UserName = info.Principal.FindFirst(ClaimTypes.Email).Value
+                };
+            return NotFound("User not found.");
+            
         }
     }
 }
