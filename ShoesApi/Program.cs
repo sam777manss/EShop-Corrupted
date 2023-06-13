@@ -21,9 +21,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 builder.Services.AddAuthentication()
 .AddFacebook(fbOptions =>
 {
-    fbOptions.AppId = "647586333933322";
-    fbOptions.AppSecret = "f20cf9e8312bd9bc92fda6845e46ef81";
-    fbOptions.CallbackPath = "/signin-facebook";
+    fbOptions.AppId = "274957924937235";
+    fbOptions.AppSecret = "a553b5c15817d9a63ba3fdad21d18613";
 })
 .AddGoogle(googleOptions =>
 {

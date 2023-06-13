@@ -60,7 +60,9 @@
                             <ul class="socials">
                                 @Html.ActionLink("Google Login", "GoogleLogin", "ExternalLogin", null, new { @class = "signup-image-link"})
 
-                                <li><a href="/ExternalLogin/GoogleLogin"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+                                <li class="details">
+                                    <a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a>
+                                </li>
                                 <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
                                 <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
                             </ul>
@@ -77,7 +79,15 @@
     <script src="~/login&signup/vendor/jquery/jquery.min.js"></script>
     <script src="~/login&signup/js/main.js"></script>
     <script src="~/js/custom/loginpage.js"></script>
-    <script></script>
+    <script>
+        $(function () {
+            $(".details").click(function () {
+                debugger;
+                var url = 'https://localhost:7257/api/ExternalLogin/ExternalLoginFB';
+                window.open(url, '_blank');
+            });
+        });
+    </script>
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>
 
