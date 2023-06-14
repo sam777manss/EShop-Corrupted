@@ -168,7 +168,7 @@ namespace Client.Controllers
                     multiContent.Add(new StringContent(addProduct.ProductCategory ?? ""), "ProductCategory");
                     multiContent.Add(new StringContent(addProduct.ProductCategoryType ?? ""), "ProductCategoryType");
                     multiContent.Add(new StringContent(addProduct.ProductCategoryDescription ?? ""), "ProductCategoryDescription");
-                    multiContent.Add(new StringContent(addProduct.VendorEmail ?? ""), "VendorEmail");
+                    //multiContent.Add(new StringContent(addProduct.VendorEmail ?? ""), "VendorEmail");
 
                     // Convert the AddProduct object to JSON and add it as a StringContent
                     var addProductJson = JsonConvert.SerializeObject(addProduct);

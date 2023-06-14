@@ -7,7 +7,7 @@ namespace ShoesApi.DbContextFile.DBFiles
     {
         [Key]
         public Guid? ProductId { get; set; }
-        public Guid? GroupId { get; set; }
+        public Guid? ProductImgGroupId { get; set; }
         public string? ProductName { get; set; }
         public string? ProductDescription { get; set; }
         public string? ProductType { get; set; }
@@ -20,5 +20,7 @@ namespace ShoesApi.DbContextFile.DBFiles
         public List<IFormFile>? Files { get; set; }
         public string? VendorEmail { get; set; }
         public string? ImageUrl { get; set; }
+
+        public virtual ICollection<ProductImageTable> ProductImageTable { get; set; }
     }
 }

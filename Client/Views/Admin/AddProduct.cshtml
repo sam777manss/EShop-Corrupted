@@ -4,6 +4,7 @@
 <link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" **important** />
 <!-- datatable.net required link ends -->
 
+
 <!-- Content wrapper -->
 <div class="content-wrapper">
     <!-- Content -->
@@ -56,7 +57,7 @@
                         -->
                             <div class="row">
                                 <div class="mb-3 col-md-6">
-                                    <label for="firstName" class="form-label">Product Name</label>
+                                    <label for="ProductName" class="form-label">Product Name</label>
                                     <input class="form-control"
                                            type="text"
                                            id="ProductName"
@@ -74,7 +75,7 @@
                                     </div>
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label for="email" class="form-label">Saller E-mail</label>
+                                    <label for="Email" class="form-label">Saller E-mail</label>
                                     <input class="form-control"
                                            type="text"
                                            id="Email"
@@ -262,7 +263,8 @@
                 },
                 error: function (xhr, status, error) {
                     // Handle the error response
-                    console.error(error);
+                    console.error(xhr.responseText);
+                    console.error(error)
                 }
             });
         }
@@ -282,7 +284,6 @@
 
     // Handle category dropdown change event
     $("#ProductType").change(function () {
-        debugger;
         var selectedCategory = $(this).val();
         var $ProductCategory = $("#ProductCategory");
 
@@ -322,7 +323,6 @@
 
     };
     $("#ProductCategory").change(function () {
-        debugger;
         var selectedProductCategory = $(this).val();
         var $ProductCategoryType = $("#ProductCategoryType");
         // clear existing ProductCategoryDescription drop down options
@@ -355,7 +355,6 @@
         Server: ["Budget", "Professional"]
     };
     $("#ProductCategoryType").change(function () {
-        debugger;
         var selectedProductCategoryType = $(this).val();
         var $ProductCategoryDescription = $("#ProductCategoryDescription");
         // clear existing ProductCategoryDescription drop down options

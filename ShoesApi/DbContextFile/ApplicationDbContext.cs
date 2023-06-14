@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using ShoesApi.DbContextFile.DBFiles;
 using ShoesApi.Models;
+using System.Net;
+using System.Reflection.Emit;
 
 namespace ShoesApi.DbContextFile
 {
@@ -15,6 +17,21 @@ namespace ShoesApi.DbContextFile
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<ProductImageTable>()
+                .HasOne(e => e.AddProductTables)
+                .WithMany(e => e.ProductImageTable)
+                .HasForeignKey(e => e.ProductImgId).IsRequired();
+
+            builder.Entity<ProductImageTable>()
+                .HasKey(d => d.ProductImgGroupId);
+
+            builder.Entity<AddProductTable>()
+                .HasMany(e => e.ProductImageTable)
+                .WithOne(z => z.AddProductTables)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<AddProductTable>()
+                .HasKey(d => d.ProductId);
 
             base.OnModelCreating(builder);
         }

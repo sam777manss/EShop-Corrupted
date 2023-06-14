@@ -6,8 +6,10 @@ namespace ShoesApi.DbContextFile.DBFiles
     public class ProductImageTable
     {
         [Key]
-        public Guid? ProductId { get; set; }
-        public Guid? GroupId { get; set; }
+        public Guid? ProductImgId { get; set; }
+        public Guid? ProductImgGroupId { get; set; }
         public string? ImageUrl { get; set; }
+
+        public virtual AddProductTable AddProductTables { get; set; }
     }
 }

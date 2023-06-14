@@ -154,7 +154,7 @@ namespace ShoesApi.Repositories
             try
             {
 
-                Guid? newGroupId = Guid.NewGuid();
+                //Guid? newGroupId = Guid.NewGuid();
                 // Create a new instance of Product using the data from the AddProduct object
                 var newProduct = new AddProductTable
                 {
@@ -165,8 +165,10 @@ namespace ShoesApi.Repositories
                     ProductCategoryType = product.ProductCategoryType,
                     ProductCategoryDescription = product.ProductCategoryDescription,
                     VendorEmail = product.VendorEmail,
-                    GroupId = newGroupId
+                    //ProductImgGroupId = newGroupId
                 };
+                context.AddProductTable.Add(newProduct);
+                await context.SaveChangesAsync();
                 // Save the image files to a storage location (e.g., disk, cloud storage)
                 foreach (var file in product.Files)
                 {
@@ -177,10 +179,13 @@ namespace ShoesApi.Repositories
                     //    await file.CopyToAsync(stream);
                     //}
                     // Save the newProduct to the database
-                    newProduct.ImageUrl = file.FileName;
-                    context.AddProductTable.Add(newProduct);
-                    await context.SaveChangesAsync();
-
+                    var productImage = new ProductImageTable
+                    {
+                        ProductImgGroupId = newProduct.ProductImgGroupId,
+                        ImageUrl = file.FileName
+                    };
+                    context.Add(productImage);
+                    //newProduct.ImageUrl = file.FileName;
                     // Get the ID of the newly created product
                     //Guid? newProductId = newProduct.ProductId;
                     // Update the ImageUrl property of the product with the file path or URL
@@ -188,6 +193,7 @@ namespace ShoesApi.Repositories
                     // If you are storing the image URL instead of the file path, update the property accordingly
                     // newProduct.ImageUrl = "YourImageUrl";
                 }
+                await context.SaveChangesAsync();
 
                 // Update the product in the database with the image URL
                 //context.AddProductTable.Update(newProduct);

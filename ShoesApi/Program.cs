@@ -1,12 +1,10 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ShoesApi.DbContextFile;
 using ShoesApi.Interfaces;
 using ShoesApi.Models;
 using ShoesApi.Repositories;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,13 +71,21 @@ builder.Services.AddCors(options =>
 });
 
 
-// --- set session time out starts --- //
-builder.Services.ConfigureApplicationCookie(options =>
+
+// Add services to the container.
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
+.AddCookie(options =>
 {
     options.Cookie.Name = ".AspNetCore.Identity.Application";
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(10); // cookie timeout 
     options.SlidingExpiration = true;
 });
+
+
 
 
 // --- set session time out Ends --- //
