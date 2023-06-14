@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoesApi.DbContextFile;
 
@@ -11,9 +12,10 @@ using ShoesApi.DbContextFile;
 namespace ShoesApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230614133013_one")]
+    partial class one
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -161,6 +163,9 @@ namespace ShoesApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("GroupId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -175,9 +180,6 @@ namespace ShoesApi.Migrations
 
                     b.Property<string>("ProductDescription")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("ProductImgGroupId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
@@ -195,20 +197,17 @@ namespace ShoesApi.Migrations
 
             modelBuilder.Entity("ShoesApi.DbContextFile.DBFiles.ProductImageTable", b =>
                 {
-                    b.Property<Guid?>("ProductImgGroupId")
+                    b.Property<Guid?>("ProductId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("GroupId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ProductImgId")
-                        .IsRequired()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ProductImgGroupId");
-
-                    b.HasIndex("ProductImgId");
+                    b.HasKey("ProductId");
 
                     b.ToTable("ProductImageTable");
                 });
@@ -345,22 +344,6 @@ namespace ShoesApi.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ShoesApi.DbContextFile.DBFiles.ProductImageTable", b =>
-                {
-                    b.HasOne("ShoesApi.DbContextFile.DBFiles.AddProductTable", "AddProductTables")
-                        .WithMany("ProductImageTable")
-                        .HasForeignKey("ProductImgId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AddProductTables");
-                });
-
-            modelBuilder.Entity("ShoesApi.DbContextFile.DBFiles.AddProductTable", b =>
-                {
-                    b.Navigation("ProductImageTable");
                 });
 #pragma warning restore 612, 618
         }
