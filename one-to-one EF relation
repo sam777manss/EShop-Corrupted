@@ -1,0 +1,74 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ShoesApi.DbContextFile.DBFiles
+{
+    public partial class AddProductTable
+    {
+        [Key]
+        public Guid? ProductId { get; set; }
+        public Guid? GroupId { get; set; }
+        public string? ProductName { get; set; }
+        public string? ProductDescription { get; set; }
+        public string? ProductType { get; set; }
+        public string? ProductCategory { get; set; }
+        public string? ProductCategoryDescription { get; set; }
+        public string? ProductCategoryType { get; set; }
+        //public string? ProductCategoryName { get; set; }
+        [Required(ErrorMessage = "Please select files")]
+        [NotMapped]
+        public List<IFormFile>? Files { get; set; }
+        public string? VendorEmail { get; set; }
+        public string? ImageUrl { get; set; }
+
+        public virtual ProductImageTable ProductImageTable { get; set; }
+    }
+}
+--------------------------------------------------------------------------------------------------------
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace ShoesApi.DbContextFile.DBFiles
+{
+    public class ProductImageTable
+    {
+        [Key]
+        public Guid? ProductId { get; set; }
+        public Guid? GroupId { get; set; }
+        public string? ImageUrl { get; set; }
+
+        public virtual AddProductTable AddProductTables { get; set; }
+    }
+}
+----------------------------------------------------------------------------------------------------------
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using ShoesApi.DbContextFile.DBFiles;
+using ShoesApi.Models;
+
+namespace ShoesApi.DbContextFile
+{
+    public class ApplicationDbContext : IdentityDbContext<AppUser>
+    {
+        public virtual DbSet<AddProductTable> AddProductTable { get; set; }
+        public virtual DbSet<ProductImageTable> ProductImageTable { get; set; }
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+        }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<ProductImageTable>()
+                .HasOne(e => e.AddProductTables)
+                .WithOne(e => e.ProductImageTable)
+                .HasForeignKey<ProductImageTable>(e => e.ProductId);
+
+            builder.Entity<ProductImageTable>()
+                .HasKey(d => d.GroupId);
+            builder.Entity<AddProductTable>()
+                .HasKey(d => d.ProductId);
+
+            base.OnModelCreating(builder);
+        }
+    }
+}
