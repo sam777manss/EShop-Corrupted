@@ -46,5 +46,5 @@ Account/login which is default by .net mvc project i have just created page to s
 1 To see relationship between database table using diagram on studio
 - install EF Core Power Tools 
   studio navbar -> Extensions -> Manage Extensions -> search and install
-2 To see diagram
--  steps -> right click on project that contains database in my case ShoesApi -> EF Core Power Tools -> ApplicationDbContext 
+- To see diagram
+2  steps -> right click on project that contains database in my case ShoesApi -> EF Core Power Tools -> ApplicationDbContext 
