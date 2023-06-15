@@ -42,3 +42,9 @@ Difference between AccessDenied and Login page i have created
 Account/login which is default by .net mvc project i have just created page to show user does not have authority
 2 When without login user try to access authorised pages user wil be redirected to Controller -> Account/AccessDenied
 
+----------------------------------------------------------------------------------------------------------------------
+1 To see relationship between database table using diagram on studio
+- install EF Core Power Tools 
+  studio navbar -> Extensions -> Manage Extensions -> search and install
+- To see diagram
+2  steps -> right click on project that contains database in my case ShoesApi -> EF Core Power Tools -> ApplicationDbContext 

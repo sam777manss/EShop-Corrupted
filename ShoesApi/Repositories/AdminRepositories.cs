@@ -154,7 +154,7 @@ namespace ShoesApi.Repositories
             try
             {
 
-                Guid? newGroupId = Guid.NewGuid();
+                //Guid? newGroupId = Guid.NewGuid();
                 // Create a new instance of Product using the data from the AddProduct object
                 var newProduct = new AddProductTable
                 {
@@ -165,7 +165,9 @@ namespace ShoesApi.Repositories
                     ProductCategoryType = product.ProductCategoryType,
                     ProductCategoryDescription = product.ProductCategoryDescription,
                     VendorEmail = product.VendorEmail,
+
                     ProductImgGroupId = newGroupId
+
                 };
                 context.AddProductTable.Add(newProduct);
                 await context.SaveChangesAsync();

@@ -29,6 +29,7 @@
                     <div class="signin-image">
                         <figure><img src="~/login&signup/images/signin-image.jpg" alt="sing up image"></figure>
                         @*<a href="#" class="signup-image-link">Create an account</a>*@
+
                         @Html.ActionLink("Create an account", "RegisterPage", "Authenticate", null, new { @class = "signup-image-link"})
                     </div>
 
@@ -57,11 +58,16 @@
                         <div class="social-login">
                             <span class="social-label">Or login with</span>
                             <ul class="socials">
-                                <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+                                @Html.ActionLink("Google Login", "GoogleLogin", "ExternalLogin", null, new { @class = "signup-image-link"})
+
+                                <li class="details">
+                                    <a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a>
+                                </li>
                                 <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
                                 <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
                             </ul>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -73,7 +79,15 @@
     <script src="~/login&signup/vendor/jquery/jquery.min.js"></script>
     <script src="~/login&signup/js/main.js"></script>
     <script src="~/js/custom/loginpage.js"></script>
-    <script></script>
+    <script>
+        $(function () {
+            $(".details").click(function () {
+                debugger;
+                var url = 'https://localhost:7257/api/ExternalLogin/ExternalLoginFB';
+                window.open(url, '_blank');
+            });
+        });
+    </script>
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>
 

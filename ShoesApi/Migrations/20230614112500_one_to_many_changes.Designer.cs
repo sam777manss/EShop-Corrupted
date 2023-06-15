@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoesApi.DbContextFile;
 
@@ -11,9 +12,10 @@ using ShoesApi.DbContextFile;
 namespace ShoesApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230614112500_one_to_many_changes")]
+    partial class one_to_many_changes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,9 +178,6 @@ namespace ShoesApi.Migrations
                     b.Property<string>("ProductDescription")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ProductImgGroupId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("ProductName")
                         .HasColumnType("nvarchar(max)");
 
@@ -195,22 +194,20 @@ namespace ShoesApi.Migrations
 
             modelBuilder.Entity("ShoesApi.DbContextFile.DBFiles.ProductImageTable", b =>
                 {
-                    b.Property<Guid?>("ProductImgGroupId")
-
+                    b.Property<Guid?>("ProductImgId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ProductImgId")
+                    b.Property<Guid?>("ProductImgGroupId")
                         .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ProductImgGroupId");
+                    b.HasKey("ProductImgId");
 
-                    b.HasIndex("ProductImgId");
-
+                    b.HasIndex("ProductImgGroupId");
 
                     b.ToTable("ProductImageTable");
                 });
@@ -353,8 +350,7 @@ namespace ShoesApi.Migrations
                 {
                     b.HasOne("ShoesApi.DbContextFile.DBFiles.AddProductTable", "AddProductTables")
                         .WithMany("ProductImageTable")
-                        .HasForeignKey("ProductImgId")
-
+                        .HasForeignKey("ProductImgGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
