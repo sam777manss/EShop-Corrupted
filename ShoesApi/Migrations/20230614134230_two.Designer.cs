@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoesApi.DbContextFile;
 
@@ -11,9 +12,10 @@ using ShoesApi.DbContextFile;
 namespace ShoesApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230614134230_two")]
+    partial class two
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,7 +159,7 @@ namespace ShoesApi.Migrations
 
             modelBuilder.Entity("ShoesApi.DbContextFile.DBFiles.AddProductTable", b =>
                 {
-                    b.Property<Guid?>("ProductImgGroupId")
+                    b.Property<Guid?>("ProductId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -188,7 +190,7 @@ namespace ShoesApi.Migrations
                     b.Property<string>("VendorEmail")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ProductImgGroupId");
+                    b.HasKey("ProductId");
 
                     b.ToTable("AddProductTable");
                 });
@@ -196,7 +198,6 @@ namespace ShoesApi.Migrations
             modelBuilder.Entity("ShoesApi.DbContextFile.DBFiles.ProductImageTable", b =>
                 {
                     b.Property<Guid?>("ProductImgGroupId")
-
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -210,7 +211,6 @@ namespace ShoesApi.Migrations
                     b.HasKey("ProductImgGroupId");
 
                     b.HasIndex("ProductImgId");
-
 
                     b.ToTable("ProductImageTable");
                 });
@@ -354,7 +354,6 @@ namespace ShoesApi.Migrations
                     b.HasOne("ShoesApi.DbContextFile.DBFiles.AddProductTable", "AddProductTables")
                         .WithMany("ProductImageTable")
                         .HasForeignKey("ProductImgId")
-
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

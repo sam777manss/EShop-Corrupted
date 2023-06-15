@@ -165,7 +165,9 @@ namespace ShoesApi.Repositories
                     ProductCategoryType = product.ProductCategoryType,
                     ProductCategoryDescription = product.ProductCategoryDescription,
                     VendorEmail = product.VendorEmail,
-                    //ProductImgGroupId = newGroupId
+
+                    ProductImgGroupId = newGroupId
+
                 };
                 context.AddProductTable.Add(newProduct);
                 await context.SaveChangesAsync();
