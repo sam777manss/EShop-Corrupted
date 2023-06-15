@@ -18,7 +18,8 @@ namespace ShoesApi.DbContextFile
             builder.Entity<ProductImageTable>()
                 .HasOne(e => e.AddProductTables)
                 .WithMany(e => e.ProductImageTable)
-                .HasForeignKey(e => e.ProductImgId).IsRequired();
+                //.HasForeignKey(e => e.ProductImgId).IsRequired();
+                .HasForeignKey(e => e.ProductImgId);
 
             builder.Entity<ProductImageTable>()
                 .HasKey(d => d.ProductImgGroupId);
@@ -26,6 +27,7 @@ namespace ShoesApi.DbContextFile
             builder.Entity<AddProductTable>()
                 .HasMany(e => e.ProductImageTable)
                 .WithOne(z => z.AddProductTables)
+                .HasForeignKey(e => e.ProductImgGroupId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<AddProductTable>()

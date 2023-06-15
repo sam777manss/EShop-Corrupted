@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ShoesApi.DbContextFile.DBFiles;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShoesApi.Models
@@ -16,5 +17,8 @@ namespace ShoesApi.Models
         [NotMapped]
         public List<IFormFile>? Files { get; set; }
         public string? VendorEmail { get; set; }
+
+        //public AddProductTable? AddProductTable { get; set; }
+        //public List<ProductImageTable>? ProductImageTable { get; set; } = new List<ProductImageTable>();
     }
 }

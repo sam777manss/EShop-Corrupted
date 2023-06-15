@@ -1,6 +1,7 @@
 ﻿using log4net;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ShoesApi.DbContextFile;
 using ShoesApi.DbContextFile.DBFiles;
 using ShoesApi.Interfaces;
@@ -170,34 +171,22 @@ namespace ShoesApi.Repositories
                 context.AddProductTable.Add(newProduct);
                 await context.SaveChangesAsync();
                 // Save the image files to a storage location (e.g., disk, cloud storage)
+
                 foreach (var file in product.Files)
                 {
-                    //string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                    //string filePath = Path.Combine(_webHostEnvironment.WebRootPath, "ImagesFolder", fileName);
-                    //using (var stream = new FileStream(filePath, FileMode.Create))
-                    //{
-                    //    await file.CopyToAsync(stream);
-                    //}
-                    // Save the newProduct to the database
                     var productImage = new ProductImageTable
                     {
-                        ProductImgGroupId = newProduct.ProductImgGroupId,
+                        ProductImgGroupId = newGroupId,
                         ImageUrl = file.FileName
                     };
-                    context.Add(productImage);
-                    //newProduct.ImageUrl = file.FileName;
-                    // Get the ID of the newly created product
-                    //Guid? newProductId = newProduct.ProductId;
-                    // Update the ImageUrl property of the product with the file path or URL
-                    //newProduct.ImageUrl.Add(filePath);
-                    // If you are storing the image URL instead of the file path, update the property accordingly
-                    // newProduct.ImageUrl = "YourImageUrl";
+                    // Detach the tracked entity before adding a new one
+
+                    // Explicitly mark the entity as newly created
+                    context.Entry(productImage).State = EntityState.Added;
+                    //context.Entry(productImage).State = EntityState.Detached;
+                    //context.ProductImageTable.Add(productImage);
                 }
                 await context.SaveChangesAsync();
-
-                // Update the product in the database with the image URL
-                //context.AddProductTable.Update(newProduct);
-                //await context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
